@@ -1,0 +1,12 @@
+{
+  "name": "rewardzone-app",
+  "version": "1.0.0",
+  "description": "RewardZone Investment App with Aviator Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
