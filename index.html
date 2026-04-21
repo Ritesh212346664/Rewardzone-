@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RewardZone</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#0d0d1a;--bg2:#12122a;--bg3:#1a1a35;--card:#1e1e38;--card2:#252545;--accent:#8b5cf6;--accent2:#6d28d9;--accent3:#a78bfa;--gold:#f59e0b;--gold2:#fbbf24;--green:#10b981;--red:#ef4444;--blue:#3b82f6;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;--border:#2d2d50;}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.page{display:none;min-height:100vh;padding-bottom:80px;}.page.active{display:block;}
+.auth-wrap{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--bg);}.auth-wrap.active{display:flex;}
+.logo-big{font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.logo-sub{color:var(--text2);font-size:.85rem;margin-bottom:32px;}
+.auth-card{background:var(--card);border-radius:20px;padding:28px 24px;width:100%;max-width:400px;border:1px solid var(--border);}
+.auth-card h2{font-size:1.3rem;margin-bottom:6px;}.auth-card p{color:var(--text2);font-size:.85rem;margin-bottom:24px;}
+.inp-group{margin-bottom:16px;}.inp-group label{font-size:.8rem;color:var(--text2);margin-bottom:6px;display:block;}
+.inp-row{display:flex;gap:8px;}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:13px 16px;border-radius:12px;font-size:.95rem;outline:none;transition:.2s;}
+.inp:focus{border-color:var(--accent);}select.inp{cursor:pointer;}textarea.inp{resize:vertical;min-height:80px;}
+.btn{width:100%;padding:14px;border-radius:12px;border:none;font-size:1rem;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;}.btn-primary:disabled{opacity:.5;cursor:not-allowed;}
+.btn-ghost{background:transparent;color:var(--accent);font-size:.9rem;margin-top:12px;border:none;cursor:pointer;width:100%;padding:10px;}
+.phone-prefix{background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:13px 14px;border-radius:12px;font-size:.95rem;min-width:64px;text-align:center;}
+.otp-note{font-size:.75rem;color:var(--text3);margin-top:6px;}
+.topbar{background:var(--bg2);padding:16px 20px 12px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;}
+.topbar .logo{font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.avatar-chip{display:flex;align-items:center;gap:8px;background:var(--card);padding:6px 12px 6px 6px;border-radius:20px;cursor:pointer;}
+.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;}
+.avatar-name{font-size:.8rem;color:var(--text2);}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:200;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0 8px;cursor:pointer;}
+.nav-item .ni{font-size:1.3rem;}.nav-item span{font-size:.58rem;color:var(--text3);margin-top:2px;}.nav-item.active span{color:var(--accent);}
+.nav-center{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:50%;width:48px;height:48px;margin-top:-16px;border:3px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.balance-card{margin:16px;background:linear-gradient(135deg,#1a1040,#2d1b69);border-radius:20px;padding:20px;border:1px solid #4c2a8a;}
+.bal-row{display:flex;justify-content:space-between;align-items:flex-start;}
+.bal-label{font-size:.78rem;color:#c4b5fd;margin-bottom:4px;}
+.bal-amount{font-size:2rem;font-weight:900;color:#fff;}.bal-amount2{font-size:1.5rem;font-weight:800;color:var(--gold);}
+.bal-actions{display:flex;gap:8px;margin-top:20px;}
+.bal-btn{flex:1;background:rgba(255,255,255,.12);border:none;color:#fff;padding:8px 4px;border-radius:12px;font-size:.68rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.bal-btn .bi{font-size:1.1rem;}
+.section-title{padding:0 16px;margin:16px 0 10px;font-size:1rem;font-weight:700;}
+.quest-card{margin:0 16px 12px;background:var(--card);border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);}
+.quest-left h3{font-size:.95rem;font-weight:700;margin-bottom:4px;}.quest-left p{font-size:.78rem;color:var(--text2);}
+.quest-btn{padding:8px 18px;border-radius:20px;border:none;font-size:.82rem;font-weight:700;cursor:pointer;}
+.qb-green{background:var(--green);color:#fff;}.qb-blue{background:var(--blue);color:#fff;}.qb-gold{background:var(--gold);color:#000;}.qb-purple{background:var(--accent);color:#fff;}.qb-red{background:var(--red);color:#fff;}
+.quest-img{font-size:2.5rem;margin-left:12px;}
+.sub-header{background:linear-gradient(135deg,var(--accent2),#4c1d95);padding:20px 20px 24px;position:relative;}
+.sub-header h1{font-size:1.1rem;font-weight:700;text-align:center;}
+.back-btn{position:absolute;left:16px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.inv-sidebar{display:flex;flex-direction:column;gap:4px;padding:16px 0 16px 16px;min-width:90px;}
+.inv-tab{padding:10px 8px;border-radius:10px 0 0 10px;font-size:.8rem;cursor:pointer;color:var(--text2);}.inv-tab.active{background:var(--card2);color:var(--accent);font-weight:700;}
+.inv-content{flex:1;padding:16px 16px 16px 8px;overflow-y:auto;}.inv-wrap{display:flex;height:calc(100vh - 140px);}
+.plan-card{background:var(--card);border-radius:16px;margin-bottom:14px;overflow:hidden;border:1px solid var(--border);}
+.plan-img{width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;background:linear-gradient(135deg,#1a2a1a,#2d4a2d);overflow:hidden;}
+.plan-img img{width:100%;height:100%;object-fit:cover;display:block;}.plan-img .emoji-fallback{font-size:4rem;}
+.plan-body{padding:14px;}.plan-title{font-size:1.05rem;font-weight:800;margin-bottom:10px;}
+.plan-row{display:flex;justify-content:space-between;margin-bottom:6px;font-size:.83rem;}
+.plan-row span:first-child{color:var(--text2);}.plan-row span:last-child{color:var(--accent3);font-weight:700;}
+.plan-invest-btn{width:100%;margin-top:12px;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:.95rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.plan-price{background:var(--bg3);padding:6px 14px;border-radius:20px;font-size:.85rem;color:var(--text2);}
+.vip-badge{position:absolute;top:8px;right:8px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;padding:3px 10px;border-radius:10px;font-size:.72rem;font-weight:800;}
+.notice-card{margin:12px 16px;background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border);}
+.notice-card h3{font-size:.9rem;font-weight:700;margin-bottom:6px;}.notice-card p{font-size:.8rem;color:var(--text2);line-height:1.5;}
+.notice-date{font-size:.72rem;color:var(--text3);margin-top:8px;}
+.notice-badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.7rem;font-weight:700;margin-bottom:8px;}
+.nb-coin{background:rgba(245,158,11,.2);color:var(--gold);}.nb-info{background:rgba(139,92,246,.2);color:var(--accent3);}
+.team-invite{margin:16px;background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border);}
+.invite-link{font-size:.8rem;color:var(--accent);word-break:break-all;margin:8px 0;}
+.copy-btn{background:var(--accent);color:#fff;border:none;padding:6px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;font-weight:700;}
+.tl-level-card{border-radius:12px;padding:14px 16px;margin:0 16px 12px;}
+.lv1{background:linear-gradient(135deg,#78350f,#b45309);}.lv2{background:linear-gradient(135deg,#1e3a5f,#1d4ed8);}.lv3{background:linear-gradient(135deg,#3d1a1a,#7f1d1d);}
+.lv-stats{display:flex;gap:16px;margin-top:10px;}.lv-stat{text-align:center;}.lv-stat-val{font-size:1.1rem;font-weight:800;}.lv-stat-lbl{font-size:.7rem;opacity:.8;margin-top:2px;}
+.acc-header{background:linear-gradient(135deg,var(--accent2),#1a0a40);padding:24px 20px;text-align:center;}
+.acc-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2rem;border:3px solid rgba(255,255,255,.2);}
+.acc-name{font-size:1.1rem;font-weight:800;}.acc-id{font-size:.8rem;color:#c4b5fd;margin-top:4px;}
+.acc-menu{margin:16px;}
+.acc-item{background:var(--card);border-radius:14px;padding:16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);cursor:pointer;}
+.acc-item-left{display:flex;align-items:center;gap:12px;}
+.acc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.ai-purple{background:rgba(139,92,246,.2);}.ai-gold{background:rgba(245,158,11,.2);}.ai-blue{background:rgba(59,130,246,.2);}.ai-green{background:rgba(16,185,129,.2);}.ai-red{background:rgba(239,68,68,.2);}
+.form-card{margin:0 16px 16px;background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border);}
+.form-card label{font-size:.8rem;color:var(--text2);margin-bottom:6px;display:block;margin-top:12px;}.form-card label:first-child{margin-top:0;}
+.explain-card{margin:0 16px 16px;background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border);}
+.explain-card h3{color:var(--accent);font-size:.9rem;margin-bottom:10px;}.explain-card p{font-size:.8rem;color:var(--text2);margin-bottom:8px;line-height:1.5;}
+.quick-amounts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
+.qa-btn{padding:10px 4px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:.85rem;cursor:pointer;text-align:center;}
+.qa-btn.selected{border-color:var(--accent);color:var(--accent);background:rgba(139,92,246,.1);}
+.channel-opt{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:12px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;}
+.channel-opt.selected{border-color:var(--accent);background:rgba(139,92,246,.1);}
+.radio-circle{width:20px;height:20px;border-radius:50%;border:2px solid var(--text3);display:flex;align-items:center;justify-content:center;}
+.radio-circle.checked{border-color:var(--accent);}.radio-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);}
+.qr-display{text-align:center;padding:24px;}
+.qr-box{width:200px;height:200px;background:#fff;margin:0 auto 16px;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:8px;}
+.qr-upi{font-size:.9rem;color:var(--accent3);font-weight:700;word-break:break-all;}
+.upload-area{border:2px dashed var(--border);border-radius:12px;padding:24px;text-align:center;cursor:pointer;margin-top:16px;}
+.upload-icon{font-size:2.5rem;margin-bottom:8px;}.upload-text{font-size:.85rem;color:var(--text2);}
+.bill-tabs{display:flex;gap:0;margin:16px;background:var(--card2);border-radius:10px;padding:4px;}
+.bill-tab{flex:1;padding:8px;text-align:center;border-radius:8px;font-size:.82rem;cursor:pointer;color:var(--text2);}
+.bill-tab.active{background:var(--accent);color:#fff;font-weight:700;}
+.bill-item{margin:0 16px 8px;background:var(--card);border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border);}
+.bi-left h4{font-size:.88rem;font-weight:700;margin-bottom:4px;}.bi-left p{font-size:.75rem;color:var(--text3);}
+.bi-amt{font-size:1rem;font-weight:800;}.bi-amt.plus{color:var(--green);}.bi-amt.minus{color:var(--red);}
+.tpin-dots{display:flex;gap:12px;justify-content:center;margin:20px 0;}
+.tpin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);background:transparent;transition:.2s;}
+.tpin-dot.filled{background:var(--accent);border-color:var(--accent);}
+.tpin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:260px;margin:0 auto;}
+.tpin-key{padding:16px;border-radius:12px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:1.2rem;font-weight:700;cursor:pointer;text-align:center;transition:.2s;}
+.tpin-key:active{background:var(--accent);color:#fff;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--bg2);border-radius:20px 20px 0 0;padding:24px;width:100%;max-width:480px;border-top:1px solid var(--border);animation:slideUp .3s ease;position:relative;max-height:90vh;overflow-y:auto;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{font-size:1.05rem;font-weight:800;margin-bottom:16px;text-align:center;}
+.modal-close{position:absolute;right:16px;top:16px;background:var(--card2);border:none;color:var(--text);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;}
+.pd-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+.pd-stat{background:var(--bg3);border-radius:10px;padding:12px;text-align:center;}
+.pd-val{font-size:1.1rem;font-weight:800;color:var(--accent3);}.pd-lbl{font-size:.72rem;color:var(--text3);margin-top:4px;}
+.loader{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3);}.empty-state .ei{font-size:3rem;margin-bottom:12px;}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--card2);color:var(--text);padding:12px 24px;border-radius:12px;font-size:.88rem;z-index:9999;transition:.3s;border:1px solid var(--border);white-space:nowrap;max-width:90vw;text-align:center;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.admin-wrap{min-height:100vh;background:var(--bg);padding:20px;padding-bottom:40px;}
+.admin-header{background:linear-gradient(135deg,#7c2d12,#ea580c);border-radius:16px;padding:20px;margin-bottom:20px;}
+.admin-header h1{font-size:1.3rem;font-weight:900;}.admin-header p{font-size:.82rem;opacity:.8;margin-top:4px;}
+.admin-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.admin-tab{padding:8px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:.82rem;cursor:pointer;}
+.admin-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;}
+.admin-section{display:none;}.admin-section.active{display:block;}
+.req-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);}
+.req-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.req-field span:first-child{color:var(--text3);display:block;font-size:.72rem;margin-bottom:2px;}.req-field span:last-child{color:var(--text);font-weight:600;font-size:.82rem;}
+.req-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.req-btn{flex:1;padding:10px;border-radius:10px;border:none;font-size:.82rem;font-weight:700;cursor:pointer;min-width:80px;}
+.rb-approve{background:var(--green);color:#fff;}.rb-reject{background:var(--red);color:#fff;}.rb-double{background:var(--gold);color:#000;}
+.status-badge{display:inline-block;padding:3px 10px;border-radius:10px;font-size:.72rem;font-weight:700;}
+.sb-pending{background:rgba(245,158,11,.2);color:var(--gold);}.sb-approved{background:rgba(16,185,129,.2);color:var(--green);}.sb-rejected{background:rgba(239,68,68,.2);color:var(--red);}
+.settings-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);}
+.settings-card h3{font-size:.9rem;font-weight:700;margin-bottom:12px;color:var(--accent3);}
+.qr-upload-box{width:160px;height:160px;background:var(--bg3);border-radius:12px;border:2px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;margin:0 auto 12px;overflow:hidden;}
+.users-table{width:100%;border-collapse:collapse;font-size:.8rem;}
+.users-table th{text-align:left;font-size:.72rem;color:var(--text3);padding:8px 6px;border-bottom:1px solid var(--border);}
+.users-table td{padding:10px 6px;border-bottom:1px solid var(--border);}
+.logout-admin{background:var(--red);color:#fff;border:none;padding:12px 24px;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:16px;width:100%;}
+.plan-edit-card{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid var(--border);}
+.plan-edit-card h4{font-size:.88rem;font-weight:700;margin-bottom:10px;color:var(--accent3);}
+.plan-edit-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.plan-edit-row label{font-size:.72rem;color:var(--text3);margin-bottom:3px;display:block;}
+.wallet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+.wallet-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 8px;}
+.wallet-box div:first-child{font-size:.68rem;color:#c4b5fd;margin-bottom:4px;}.wallet-box div:last-child{font-size:.95rem;font-weight:800;color:#fff;}
+.plan-photo-preview{width:100%;height:72px;border-radius:10px;background:var(--bg3);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--text3);font-size:.78rem;cursor:pointer;}
+.plan-photo-preview img{width:100%;height:100%;object-fit:cover;}
+.order-card{margin:12px 16px;background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden;}
+.order-head{padding:16px;cursor:pointer;}
+.order-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px;}
+.order-title{font-size:.98rem;font-weight:800;}
+.order-sub{font-size:.74rem;color:var(--text3);margin-top:3px;}
+.order-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.order-stat{background:var(--bg3);border-radius:10px;padding:9px 7px;text-align:center;}
+.order-stat div:first-child{font-size:.68rem;color:var(--text3);margin-bottom:3px;}
+.order-stat div:last-child{font-size:.82rem;font-weight:800;color:var(--accent3);}
+.order-detail{display:none;border-top:1px solid var(--border);padding:12px 16px 16px;background:rgba(0,0,0,.12);}
+.order-card.open .order-detail{display:block;}
+.earning-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.8rem;}
+.earning-row:last-child{border-bottom:none;}
+.earning-date{color:var(--text2);line-height:1.35;}
+.earning-amt{text-align:right;font-weight:800;}
+.es-paid{color:var(--green);}.es-pending{color:var(--gold);}.es-moved{color:var(--accent3);}
+.vip-list-item{margin:8px 16px;background:var(--card);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;border:1px solid var(--border);}
+.vip-icon{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;flex-shrink:0;}
+.vi0{background:#374151;color:#9ca3af;}.vi1{background:rgba(59,130,246,.2);color:#60a5fa;}.vi2{background:rgba(59,130,246,.3);color:#3b82f6;}
+.vi3{background:rgba(245,158,11,.2);color:var(--gold);}.vi4{background:rgba(139,92,246,.2);color:var(--accent);}
+.vi5{background:rgba(16,185,129,.2);color:var(--green);}.vi6{background:rgba(239,68,68,.2);color:var(--red);}
+.vi7{background:rgba(236,72,153,.2);color:#ec4899;}.vi8{background:rgba(245,158,11,.3);color:#fbbf24;}
+.blog-post-card{margin:0 16px 12px;background:var(--card);border-radius:16px;padding:16px;border:1px solid var(--border);}
+.blog-post-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.blog-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;}
+.blog-phone{font-size:.85rem;color:var(--text2);}
+.blog-post-img{width:100%;border-radius:10px;max-height:200px;object-fit:cover;margin:8px 0;}
+.blog-post-content{font-size:.88rem;line-height:1.5;margin-bottom:8px;}
+.blog-post-footer{display:flex;justify-content:space-between;align-items:center;}
+.blog-reward{font-size:.9rem;font-weight:800;color:var(--gold);}
+.blog-date{font-size:.72rem;color:var(--text3);}
+.blog-status{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:10px;}
+.bs-pending{background:rgba(245,158,11,.2);color:var(--gold);}
+.bs-approved{background:rgba(16,185,129,.2);color:var(--green);}
+.bs-rejected{background:rgba(239,68,68,.2);color:var(--red);}
+.help-hero{background:linear-gradient(135deg,var(--accent2),#1a0a40);padding:28px 20px;}
+.help-hero h2{font-size:1.4rem;font-weight:800;margin-bottom:6px;}.help-hero p{font-size:.85rem;color:#c4b5fd;}
+.help-card{margin:12px 16px;background:var(--card);border-radius:14px;padding:16px;display:flex;gap:14px;border:1px solid var(--border);cursor:pointer;}
+.help-icon-wrap{width:48px;height:48px;border-radius:12px;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+.help-text h3{font-size:.9rem;font-weight:700;margin-bottom:6px;}.help-text p{font-size:.78rem;color:var(--text2);line-height:1.5;}
+
+/* ===== AVIATOR STYLES ===== */
+.aviator-page{background:linear-gradient(180deg,#0a0a1a 0%,#0d0d20 100%);min-height:100vh;padding-bottom:80px;}
+.aviator-header{background:linear-gradient(135deg,#1a0030,#2d0050);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(139,92,246,.3);}
+.aviator-header h1{font-size:1rem;font-weight:900;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.av-mode-tabs{display:flex;gap:0;margin:12px 16px;background:rgba(255,255,255,.08);border-radius:12px;padding:4px;}
+.av-mode-tab{flex:1;padding:10px;text-align:center;border-radius:10px;font-size:.82rem;font-weight:700;cursor:pointer;color:var(--text2);transition:.2s;}
+.av-mode-tab.active{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;}
+.aviator-canvas-wrap{position:relative;height:220px;margin:0 16px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#0f0020 0%,#1a0035 60%,#0d001a 100%);border:1px solid rgba(139,92,246,.3);}
+.av-sky{position:absolute;inset:0;overflow:hidden;}
+.av-star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:.6;}
+.av-multiplier{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;font-weight:900;text-align:center;z-index:10;transition:color .3s;}
+.av-multiplier.normal{color:#fff;text-shadow:0 0 20px rgba(245,158,11,.8);}
+.av-multiplier.danger{color:#ef4444;text-shadow:0 0 20px rgba(239,68,68,.8);animation:shake .1s infinite;}
+.av-multiplier.crashed{color:#ef4444;text-shadow:none;}
+@keyframes shake{0%,100%{transform:translate(-50%,-50%)}25%{transform:translate(-48%,-50%)}75%{transform:translate(-52%,-50%)};}
+.av-plane{position:absolute;font-size:2.5rem;transition:left .1s linear, bottom .1s linear;z-index:20;filter:drop-shadow(0 0 10px rgba(245,158,11,.8));}
+.av-trail{position:absolute;height:3px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.6),rgba(239,68,68,.8));border-radius:2px;transform-origin:left center;}
+.av-status-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;}
+.av-phase-label{font-size:.78rem;font-weight:700;}
+.av-phase-label.betting{color:var(--green);}
+.av-phase-label.flying{color:var(--gold);}
+.av-phase-label.crashed{color:var(--red);}
+.av-phase-label.waiting{color:var(--text2);}
+.av-countdown{font-size:.78rem;color:var(--text2);}
+.av-bet-panel{margin:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.av-bet-slot{background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--border);}
+.av-bet-slot h4{font-size:.78rem;font-weight:700;color:var(--text2);margin-bottom:10px;text-align:center;}
+.av-bet-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:10px;font-size:.9rem;outline:none;margin-bottom:8px;text-align:center;}
+.av-bet-btn{width:100%;padding:10px;border-radius:10px;border:none;font-size:.82rem;font-weight:700;cursor:pointer;transition:.2s;}
+.av-bet-btn.place{background:linear-gradient(135deg,var(--green),#059669);color:#fff;}
+.av-bet-btn.cashout{background:linear-gradient(135deg,var(--gold),#d97706);color:#000;}
+.av-bet-btn.placed{background:rgba(16,185,129,.2);color:var(--green);cursor:not-allowed;}
+.av-bet-btn.disabled{background:var(--bg3);color:var(--text3);cursor:not-allowed;}
+.av-bet-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:8px;}
+.av-bet-qb{padding:5px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:.72rem;cursor:pointer;text-align:center;}
+.av-live-bets{margin:0 16px 12px;}
+.av-live-bets h3{font-size:.85rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.av-live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4};}
+.av-bet-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.78rem;}
+.av-bet-row:last-child{border-bottom:none;}
+.av-bet-name{color:var(--text2);}
+.av-bet-amt{color:var(--text);}
+.av-bet-cashout{color:var(--green);font-weight:700;}
+.av-bet-lost{color:var(--red);font-weight:700;}
+.av-result-history{margin:0 16px 16px;background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--border);}
+.av-result-history h3{font-size:.85rem;font-weight:700;margin-bottom:10px;}
+.av-history-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.av-chip{padding:5px 12px;border-radius:20px;font-size:.78rem;font-weight:700;background:rgba(0,0,0,.3);}
+.av-chip.low{background:rgba(239,68,68,.2);color:#ef4444;}
+.av-chip.mid{background:rgba(245,158,11,.2);color:#f59e0b;}
+.av-chip.high{background:rgba(16,185,129,.2);color:#10b981;}
+
+/* Aviator game section banner */
+.aviator-banner{margin:0 16px 12px;background:linear-gradient(135deg,#1a0030,#2d0050);border-radius:16px;padding:16px;border:1px solid rgba(139,92,246,.4);cursor:pointer;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;}
+.aviator-banner::before{content:'✈️';position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.15;}
+.aviator-banner-left h3{font-size:1rem;font-weight:900;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.aviator-banner-left p{font-size:.78rem;color:#c4b5fd;}
+.aviator-banner-icon{font-size:2.5rem;flex-shrink:0;}
+.av-play-btn{background:linear-gradient(135deg,var(--red),#dc2626);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:.8rem;font-weight:700;cursor:pointer;margin-top:8px;}
+
+/* Toggle switch */
+.toggle-wrap{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.toggle-wrap label{font-size:.85rem;color:var(--text);}
+.toggle{position:relative;width:48px;height:26px;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--bg3);border-radius:13px;cursor:pointer;transition:.3s;}
+.toggle-slider::before{content:'';position:absolute;height:20px;width:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+.toggle input:checked + .toggle-slider{background:var(--accent);}
+.toggle input:checked + .toggle-slider::before{transform:translateX(22px);}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="auth-wrap active" id="page-login">
+  <div style="text-align:center;margin-bottom:32px;">
+    <div class="logo-big">🏆 RewardZone</div>
+    <div class="logo-sub">Earn • Grow • Withdraw</div>
+  </div>
+  <div class="auth-card">
+    <h2>Welcome Back 👋</h2>
+    <p>Sign in to your account</p>
+    <div class="inp-group">
+      <label>Phone Number</label>
+      <div class="inp-row">
+        <div class="phone-prefix">+91</div>
+        <input class="inp" id="login-phone" type="tel" maxlength="10" placeholder="10 digit number">
+      </div>
+    </div>
+    <div class="inp-group">
+      <label>Password</label>
+      <input class="inp" id="login-pass" type="password" placeholder="Enter password">
+    </div>
+    <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Login Now</button>
+    <button class="btn btn-ghost" onclick="showForgotPassword()" style="margin-top:6px;padding:6px;">Forgot Password?</button>
+    <button class="btn btn-ghost" onclick="showAuthPage('page-register')">Don't have an account? <b>Register Now</b></button>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="auth-wrap" id="page-register">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div class="logo-big">🏆 RewardZone</div>
+    <div class="logo-sub">Create your account</div>
+  </div>
+  <div class="auth-card">
+    <h2>Create Account ✨</h2>
+    <p>Join RewardZone today</p>
+    <div class="inp-group">
+      <label>Full Name</label>
+      <input class="inp" id="reg-name" type="text" placeholder="Your full name">
+    </div>
+    <div class="inp-group">
+      <label>Phone Number</label>
+      <div class="inp-row">
+        <div class="phone-prefix">+91</div>
+        <input class="inp" id="reg-phone" type="tel" maxlength="10" placeholder="10 digit number">
+      </div>
+    </div>
+    <div class="inp-group">
+      <label>Private Code</label>
+      <div class="inp-row">
+        <input class="inp" id="reg-otp" type="text" maxlength="8" placeholder="Enter your private code">
+        <button class="btn btn-primary" id="otp-btn" style="width:auto;padding:0 14px;white-space:nowrap;font-size:.82rem;" onclick="generatePrivateCode()">Get Code</button>
+      </div>
+      <div class="otp-note" id="otp-note">Click "Get Code" to receive your private code</div>
+    </div>
+    <div class="inp-group">
+      <label>Password</label>
+      <input class="inp" id="reg-pass" type="password" placeholder="Create password (min 6 chars)">
+    </div>
+    <div class="inp-group">
+      <label>Referral Code (Optional)</label>
+      <input class="inp" id="reg-ref" type="text" placeholder="Enter referral code" style="text-transform:uppercase;">
+    </div>
+    <button class="btn btn-primary" id="reg-btn" onclick="doRegister()">Create Account</button>
+    <button class="btn btn-ghost" onclick="showAuthPage('page-login')">Already have an account? <b>Login</b></button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app" style="display:none;">
+  <div class="topbar" id="main-topbar">
+    <div class="topbar-inner">
+      <div class="logo">🏆 RewardZone</div>
+      <div class="avatar-chip" onclick="showSubPage('sub-help')">
+        <div class="avatar" id="top-avatar">R</div>
+        <span class="avatar-name" id="top-name">User</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="balance-card">
+      <div class="bal-row">
+        <div><div class="bal-label">Total Wallet</div><div class="bal-amount">₹<span id="bal-total-wallet">0</span></div></div>
+        <div style="text-align:right;"><div class="bal-label">Revenue Wallet</div><div class="bal-amount2">₹<span id="bal-income">0</span></div></div>
+      </div>
+      <div class="wallet-grid">
+        <div class="wallet-box"><div>Recharge</div><div>₹<span id="bal-coins">0</span></div></div>
+        <div class="wallet-box"><div>Revenue</div><div>₹<span id="bal-revenue-mini">0</span></div></div>
+        <div class="wallet-box"><div>Withdrawal</div><div>₹<span id="bal-withdrawal">0</span></div></div>
+      </div>
+      <div class="bal-actions">
+        <button class="bal-btn" onclick="showSubPage('sub-recharge')"><span class="bi">💳</span><span>Recharge</span></button>
+        <button class="bal-btn" onclick="showSubPage('sub-withdraw')"><span class="bi">💸</span><span>Withdraw</span></button>
+        <button class="bal-btn" onclick="showSubPage('sub-team')"><span class="bi">👥</span><span>Team</span></button>
+        <button class="bal-btn" onclick="showSubPage('sub-help')"><span class="bi">💬</span><span>Service</span></button>
+        <button class="bal-btn" onclick="openTelegram()"><span class="bi">✈️</span><span>Telegram</span></button>
+      </div>
+    </div>
+
+    <div class="section-title">✈️ Aviator Game</div>
+    <!-- 1 MIN AVIATOR BANNER -->
+    <div class="aviator-banner" onclick="showAviator('1min')">
+      <div class="aviator-banner-icon">✈️</div>
+      <div class="aviator-banner-left">
+        <h3>Aviator 1 Min</h3>
+        <p>60 second betting window • Max win 100x</p>
+        <button class="av-play-btn">Play Now →</button>
+      </div>
+    </div>
+    <!-- 10 SEC AVIATOR BANNER -->
+    <div class="aviator-banner" onclick="showAviator('10sec')" style="margin-top:0;">
+      <div class="aviator-banner-icon">🚀</div>
+      <div class="aviator-banner-left">
+        <h3>Aviator 10 Sec</h3>
+        <p>10 second fast rounds • Quick wins</p>
+        <button class="av-play-btn" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">Play Fast →</button>
+      </div>
+    </div>
+
+    <div class="section-title">Quest Rewards</div>
+    <div class="quest-card">
+      <div class="quest-left"><h3>Sign in to receive rewards</h3><p>Daily check-in can receive ₹3</p>
+        <button class="quest-btn qb-green" id="checkin-btn" onclick="doCheckin()" style="margin-top:10px;">Sign In</button></div>
+      <div class="quest-img">🎁</div>
+    </div>
+    <div class="quest-card">
+      <div class="quest-left"><h3>My Team</h3><p>Build your own team and make more</p>
+        <button class="quest-btn qb-blue" onclick="showSubPage('sub-team')" style="margin-top:10px;">Go →</button></div>
+      <div class="quest-img">👥</div>
+    </div>
+    <div class="quest-card">
+      <div class="quest-left"><h3>Task Reward</h3><p>Complete tasks and receive daily bonus</p>
+        <button class="quest-btn qb-gold" onclick="switchNav('invest')" style="margin-top:10px;">Go →</button></div>
+      <div class="quest-img">✅</div>
+    </div>
+  </div>
+
+  <!-- INVEST -->
+  <div class="page" id="page-invest">
+    <div class="sub-header" style="padding-top:16px;padding-bottom:16px;"><h1>Investment List</h1></div>
+    <div class="inv-wrap">
+      <div class="inv-sidebar">
+        <div class="inv-tab active" onclick="switchInvTab(this,'stable')">📊 Stable</div>
+        <div class="inv-tab" onclick="switchInvTab(this,'welfare')">🎁 Bonus</div>
+        <div class="inv-tab" onclick="switchInvTab(this,'new')">🔥 New</div>
+      </div>
+      <div class="inv-content" id="inv-content"></div>
+    </div>
+  </div>
+
+  <!-- NOTICE -->
+  <div class="page" id="page-notice">
+    <div class="sub-header" style="padding-top:16px;padding-bottom:16px;"><h1>Notice & Updates</h1></div>
+    <div id="notice-list" style="padding-top:8px;"></div>
+  </div>
+
+  <!-- BLOG -->
+  <div class="page" id="page-blog">
+    <div class="sub-header" style="padding-top:16px;padding-bottom:16px;"><h1>Blog</h1></div>
+    <div style="padding:12px 16px 0;">
+      <div style="display:flex;gap:10px;margin-bottom:16px;">
+        <button onclick="showSubPage('sub-post-blog')" style="flex:1;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;color:#fff;padding:14px;border-radius:14px;font-size:.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:1.4rem;">📝</span><div style="text-align:left;"><div>Publish</div><div style="font-size:.72rem;opacity:.8;">Go publish</div></div><span style="margin-left:auto;">→</span>
+        </button>
+        <button onclick="showBlogRules()" style="flex:1;background:linear-gradient(135deg,#92400e,#f59e0b);border:none;color:#fff;padding:14px;border-radius:14px;font-size:.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:1.4rem;">🎁</span><div style="text-align:left;"><div>Rules</div><div style="font-size:.72rem;opacity:.8;">Publish Rules</div></div><span style="margin-left:auto;">→</span>
+        </button>
+      </div>
+      <div id="blog-posts-list"><div class="empty-state"><div class="ei">📝</div><p>No posts yet. Be the first!</p></div></div>
+    </div>
+  </div>
+
+  <!-- ACCOUNT -->
+  <div class="page" id="page-account">
+    <div class="acc-header">
+      <div class="acc-avatar" id="acc-avatar-big">R</div>
+      <div class="acc-name" id="acc-name-big">User</div>
+      <div class="acc-id" id="acc-info-big">ID: 000000</div>
+    </div>
+    <div class="acc-menu">
+      <div class="acc-item" onclick="showSubPage('sub-vip-levels')">
+        <div class="acc-item-left"><div class="acc-icon ai-gold">👑</div><div><div style="font-size:.9rem;font-weight:700;">VIP Level</div><div style="font-size:.75rem;color:var(--text2);">View your VIP status</div></div></div><span style="color:var(--text3);">›</span>
+      </div>
+      <div class="acc-item" onclick="showSubPage('sub-bill')">
+        <div class="acc-item-left"><div class="acc-icon ai-blue">📋</div><div><div style="font-size:.9rem;font-weight:700;">My Bill</div><div style="font-size:.75rem;color:var(--text2);">Transaction history</div></div></div><span style="color:var(--text3);">›</span>
+      </div>
+      <div class="acc-item" onclick="showSubPage('sub-orders')">
+        <div class="acc-item-left"><div class="acc-icon ai-purple">🛍️</div><div><div style="font-size:.9rem;font-weight:700;">My Order</div><div style="font-size:.75rem;color:var(--text2);">Plans & daily earnings</div></div></div><span style="color:var(--text3);">›</span>
+      </div>
+      <div class="acc-item" onclick="showSubPage('sub-bank')">
+        <div class="acc-item-left"><div class="acc-icon ai-green">🏦</div><div><div style="font-size:.9rem;font-weight:700;">Bank Card Info</div><div style="font-size:.75rem;color:var(--text2);">Manage withdrawal account</div></div></div><span style="color:var(--text3);">›</span>
+      </div>
+      <div class="acc-item" onclick="showSubPage('sub-withdraw')">
+        <div class="acc-item-left"><div class="acc-icon ai-purple">💸</div><div><div style="font-size:.9rem;font-weight:700;">Withdraw</div><div style="font-size:.75rem;color:var(--text2);">Request withdrawal</div></div></div><span style="color:var(--text3);">›</span>
+      </div>
+      <div class="acc-item" onclick="showSubPage('sub-recharge')">
+        <div class="acc-item-left"><div class="acc-icon ai-gold">💳</div><div><div style="font-size:.9rem;font-weight:700;">Recharge</div><div style="font-size:.75rem;color:var(--text2);">Add to account</div></div></div><span style="color:var(--text3);">›</span>
+      </div>
+      <div class="acc-item" onclick="showSubPage('sub-tpin-setup')">
+        <div class="acc-item-left"><div class="acc-icon ai-purple">🔐</div><div><div style="font-size:.9rem;font-weight:700;">Set TPIN</div><div style="font-size:.75rem;color:var(--text2);">4-digit transaction PIN</div></div></div><span style="color:var(--text3);">›</span>
+      </div>
+      <div class="acc-item" onclick="showSubPage('sub-team')">
+        <div class="acc-item-left"><div class="acc-icon ai-blue">👥</div><div><div style="font-size:.9rem;font-weight:700;">My Team</div><div style="font-size:.75rem;color:var(--text2);">Referrals & rebates</div></div></div><span style="color:var(--text3);">›</span>
+      </div>
+      <div class="acc-item" onclick="doLogout()">
+        <div class="acc-item-left"><div class="acc-icon ai-red">🚪</div><div><div style="font-size:.9rem;font-weight:700;color:var(--red);">Logout</div></div></div><span style="color:var(--text3);">›</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item active" id="nav-home" onclick="switchNav('home')"><span class="ni">🏠</span><span>Home</span></div>
+    <div class="nav-item" id="nav-invest" onclick="switchNav('invest')"><span class="ni">💰</span><span>Invest</span></div>
+    <div class="nav-item" id="nav-aviator" onclick="showAviator('1min')"><div class="nav-center">✈️</div><span>Aviator</span></div>
+    <div class="nav-item" id="nav-blog" onclick="switchNav('blog')"><span class="ni">📝</span><span>Blog</span></div>
+    <div class="nav-item" id="nav-account" onclick="switchNav('account')"><span class="ni">👤</span><span>Account</span></div>
+  </div>
+
+  <!-- ===== SUB PAGES ===== -->
+
+  <!-- AVIATOR GAME PAGE -->
+  <div class="page aviator-page" id="sub-aviator" style="display:none;padding-bottom:80px;">
+    <div class="aviator-header">
+      <button class="back-btn" onclick="goBack()" style="position:static;transform:none;background:rgba(255,255,255,.1);">‹</button>
+      <h1>✈️ AVIATOR</h1>
+      <div style="width:34px;"></div>
+    </div>
+
+    <!-- MODE TABS -->
+    <div class="av-mode-tabs">
+      <div class="av-mode-tab active" id="av-tab-1min" onclick="switchAvMode('1min')">⏱ 1 Minute</div>
+      <div class="av-mode-tab" id="av-tab-10sec" onclick="switchAvMode('10sec')">⚡ 10 Seconds</div>
+    </div>
+
+    <!-- GAME CANVAS -->
+    <div class="aviator-canvas-wrap" id="av-canvas">
+      <div class="av-sky" id="av-sky"></div>
+      <canvas id="av-trail-canvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+      <div class="av-plane" id="av-plane" style="bottom:20%;left:10%;">✈️</div>
+      <div class="av-multiplier normal" id="av-multiplier">1.00x</div>
+      <div class="av-status-bar">
+        <span class="av-phase-label waiting" id="av-phase-label">Waiting...</span>
+        <span class="av-countdown" id="av-countdown"></span>
+      </div>
+    </div>
+
+    <!-- BET PANEL -->
+    <div class="av-bet-panel" id="av-bet-panel">
+      <!-- BET SLOT 1 -->
+      <div class="av-bet-slot">
+        <h4>Bet 1</h4>
+        <div class="av-bet-quick">
+          <div class="av-bet-qb" onclick="setAvBet(1,10)">₹10</div>
+          <div class="av-bet-qb" onclick="setAvBet(1,50)">₹50</div>
+          <div class="av-bet-qb" onclick="setAvBet(1,100)">₹100</div>
+          <div class="av-bet-qb" onclick="setAvBet(1,200)">₹200</div>
+          <div class="av-bet-qb" onclick="setAvBet(1,500)">₹500</div>
+          <div class="av-bet-qb" onclick="setAvBet(1,1000)">₹1K</div>
+        </div>
+        <input class="av-bet-input" id="av-bet1-inp" type="number" placeholder="₹ Amount" min="1">
+        <button class="av-bet-btn place" id="av-btn1" onclick="placeAvBet(1)">Place Bet</button>
+      </div>
+      <!-- BET SLOT 2 -->
+      <div class="av-bet-slot">
+        <h4>Bet 2</h4>
+        <div class="av-bet-quick">
+          <div class="av-bet-qb" onclick="setAvBet(2,10)">₹10</div>
+          <div class="av-bet-qb" onclick="setAvBet(2,50)">₹50</div>
+          <div class="av-bet-qb" onclick="setAvBet(2,100)">₹100</div>
+          <div class="av-bet-qb" onclick="setAvBet(2,200)">₹200</div>
+          <div class="av-bet-qb" onclick="setAvBet(2,500)">₹500</div>
+          <div class="av-bet-qb" onclick="setAvBet(2,1000)">₹1K</div>
+        </div>
+        <input class="av-bet-input" id="av-bet2-inp" type="number" placeholder="₹ Amount" min="1">
+        <button class="av-bet-btn place" id="av-btn2" onclick="placeAvBet(2)">Place Bet</button>
+      </div>
+    </div>
+
+    <!-- LIVE BETS LIST -->
+    <div class="av-live-bets" style="background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--border);">
+      <h3><span class="av-live-dot"></span> Live Bets</h3>
+      <div id="av-live-bets-list"></div>
+    </div>
+
+    <!-- RESULT HISTORY -->
+    <div class="av-result-history">
+      <h3>Round History</h3>
+      <div class="av-history-chips" id="av-history-chips">
+        <span class="av-chip low">1.23x</span>
+        <span class="av-chip mid">3.45x</span>
+        <span class="av-chip high">8.90x</span>
+        <span class="av-chip low">1.01x</span>
+        <span class="av-chip mid">2.11x</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECHARGE -->
+  <div class="page" id="sub-recharge" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>Recharge</h1></div>
+    <div style="background:linear-gradient(135deg,var(--accent2),#1a0a40);padding:0 20px 20px;">
+      <div style="font-size:.85rem;color:#c4b5fd;">Recharge Wallet</div>
+      <div style="font-size:2rem;font-weight:900;">₹<span id="recharge-bal">0</span></div>
+    </div>
+    <div class="form-card" style="margin-top:16px;">
+      <label>Recharge Amount</label>
+      <div style="position:relative;"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text2);">₹</span>
+        <input class="inp" id="recharge-amount" type="number" placeholder="Enter amount" style="padding-left:30px;" oninput="updateQuickSelect(this.value)">
+      </div>
+      <div style="font-size:.82rem;color:var(--text2);margin-top:10px;">Quick Amount</div>
+      <div class="quick-amounts">
+        <div class="qa-btn" onclick="selectQA(this,300)">300</div>
+        <div class="qa-btn" onclick="selectQA(this,444)">444</div>
+        <div class="qa-btn" onclick="selectQA(this,1144)">1144</div>
+        <div class="qa-btn" onclick="selectQA(this,1244)">1244</div>
+        <div class="qa-btn" onclick="selectQA(this,1944)">1944</div>
+        <div class="qa-btn" onclick="selectQA(this,19444)">19444</div>
+        <div class="qa-btn" onclick="selectQA(this,49444)">49444</div>
+      </div>
+    </div>
+    <div class="form-card">
+      <label>Recharge Channel</label>
+      <div id="recharge-channel-list"></div>
+    </div>
+    <div class="explain-card">
+      <h3>Explain</h3>
+      <p>1. Deposit credited within 5 minutes after admin approval.</p>
+      <p>2. Upload screenshot as payment proof.</p>
+      <p>3. Do not modify the deposit amount.</p>
+    </div>
+    <div style="padding:0 16px 16px;"><button class="btn btn-primary" onclick="goToQR()">Recharge Now ⚡</button></div>
+  </div>
+
+  <!-- QR PAY -->
+  <div class="page" id="sub-qrpay" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>Pay via UPI</h1></div>
+    <div class="qr-display">
+      <div style="font-size:.85rem;color:var(--text2);margin-bottom:12px;">Scan QR to pay <b style="color:var(--gold);">₹<span id="pay-amount-show">0</span></b></div>
+      <div class="qr-box">
+        <div id="qr-placeholder" style="text-align:center;color:#999;font-size:.8rem;"></div>
+        <img id="qr-img-display" src="" style="display:none;width:100%;height:100%;object-fit:contain;border-radius:10px;">
+      </div>
+      <div style="font-size:.82rem;color:var(--text2);margin-bottom:4px;">Selected Channel:</div>
+      <div class="qr-upi" id="pay-channel-show">UPI Fast Pay</div>
+      <div style="font-size:.82rem;color:var(--text2);margin:10px 0 4px;">UPI ID:</div>
+      <div class="qr-upi" id="upi-id-show">Loading...</div>
+      <div class="upload-area" onclick="document.getElementById('proof-upload').click()">
+        <div class="upload-icon">📤</div>
+        <div class="upload-text">Upload Payment Screenshot</div>
+        <div style="font-size:.75rem;color:var(--text3);margin-top:4px;">Tap to select image</div>
+        <input type="file" id="proof-upload" accept="image/*" style="display:none;" onchange="previewProof(this)">
+      </div>
+      <div id="proof-preview" style="display:none;margin-top:12px;"><img id="proof-img" style="width:100%;border-radius:10px;max-height:200px;object-fit:cover;"></div>
+      <div style="margin-top:12px;font-size:.75rem;color:var(--text3);">UTR / Reference number</div>
+      <input class="inp" id="utr-input" type="text" placeholder="Enter UTR number" style="margin-top:6px;">
+      <button class="btn btn-primary" id="submit-recharge-btn" onclick="submitRecharge()" style="margin-top:16px;">Submit Payment Proof ✅</button>
+    </div>
+  </div>
+
+  <!-- WITHDRAW -->
+  <div class="page" id="sub-withdraw" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>Withdraw</h1></div>
+    <div style="background:linear-gradient(135deg,var(--accent2),#4c1d95);padding:20px;">
+      <div style="font-size:.85rem;color:#c4b5fd;">Balance</div>
+      <div style="font-size:2.2rem;font-weight:900;">₹<span id="wdraw-bal">0</span>.00</div>
+    </div>
+    <div style="margin:16px;background:linear-gradient(135deg,#1a1040,var(--accent2));border-radius:16px;padding:20px;border:1px solid #5b21b6;">
+      <div style="display:flex;justify-content:space-between;"><div style="font-size:1.5rem;">💳</div><div style="opacity:.6;font-size:.75rem;">Bank Card</div></div>
+      <div style="font-size:1.3rem;font-weight:800;letter-spacing:2px;margin:12px 0 6px;" id="wdraw-bank-num">**** **** ****</div>
+      <div style="font-size:.8rem;opacity:.8;" id="wdraw-bank-name">No bank card linked</div>
+    </div>
+    <div class="form-card">
+      <label>Amount</label>
+      <input class="inp" id="wdraw-amount" type="number" placeholder="107 - 990000">
+    </div>
+    <div style="padding:0 16px 8px;font-size:.85rem;color:var(--text2);">Enter 4-digit TPIN to confirm</div>
+    <div class="tpin-dots" id="wdraw-tpin-dots">
+      <div class="tpin-dot" id="wd0"></div><div class="tpin-dot" id="wd1"></div>
+      <div class="tpin-dot" id="wd2"></div><div class="tpin-dot" id="wd3"></div>
+    </div>
+    <div class="tpin-keypad" style="padding:0 16px 16px;max-width:320px;margin:0 auto;">
+      <button class="tpin-key" onclick="tpinKey('wdraw','1')">1</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','2')">2</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','3')">3</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','4')">4</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','5')">5</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','6')">6</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','7')">7</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','8')">8</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','9')">9</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','back')" style="color:var(--red);">⌫</button>
+      <button class="tpin-key" onclick="tpinKey('wdraw','0')">0</button>
+      <button class="tpin-key" onclick="submitWithdraw()" style="background:var(--green);color:#fff;">✓</button>
+    </div>
+    <div class="explain-card">
+      <h3>Explain</h3>
+      <p>1. Daily withdrawal time 09:00 - 16:30</p>
+      <p>2. Withdraw between 107 and 990000</p>
+      <p>3. Only 1 withdrawal request per day</p>
+      <p>4. Withdrawal rate: 5%</p>
+    </div>
+  </div>
+
+  <!-- TPIN SETUP -->
+  <div class="page" id="sub-tpin-setup" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>Set TPIN</h1></div>
+    <div style="text-align:center;padding:24px 16px;">
+      <div style="font-size:3rem;margin-bottom:12px;">🔐</div>
+      <div style="font-size:.9rem;color:var(--text2);margin-bottom:24px;">Set your 4-digit Transaction PIN for withdrawals</div>
+      <div style="font-size:.82rem;color:var(--text3);margin-bottom:8px;" id="tpin-setup-label">Enter new TPIN</div>
+      <div class="tpin-dots" id="setup-tpin-dots">
+        <div class="tpin-dot" id="st0"></div><div class="tpin-dot" id="st1"></div>
+        <div class="tpin-dot" id="st2"></div><div class="tpin-dot" id="st3"></div>
+      </div>
+      <div class="tpin-keypad" style="margin-top:20px;">
+        <button class="tpin-key" onclick="tpinKey('setup','1')">1</button>
+        <button class="tpin-key" onclick="tpinKey('setup','2')">2</button>
+        <button class="tpin-key" onclick="tpinKey('setup','3')">3</button>
+        <button class="tpin-key" onclick="tpinKey('setup','4')">4</button>
+        <button class="tpin-key" onclick="tpinKey('setup','5')">5</button>
+        <button class="tpin-key" onclick="tpinKey('setup','6')">6</button>
+        <button class="tpin-key" onclick="tpinKey('setup','7')">7</button>
+        <button class="tpin-key" onclick="tpinKey('setup','8')">8</button>
+        <button class="tpin-key" onclick="tpinKey('setup','9')">9</button>
+        <button class="tpin-key" onclick="tpinKey('setup','back')" style="color:var(--red);">⌫</button>
+        <button class="tpin-key" onclick="tpinKey('setup','0')">0</button>
+        <button class="tpin-key" style="opacity:.3;">✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BANK CARD -->
+  <div class="page" id="sub-bank" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>Bank Card Info</h1></div>
+    <div class="form-card" style="margin-top:16px;">
+      <label>Bank Name</label>
+      <select class="inp" id="bank-name-sel">
+        <optgroup label="Public Sector Banks">
+          <option>State Bank of India (SBI)</option><option>Bank of Baroda</option><option>Punjab National Bank (PNB)</option><option>Canara Bank</option><option>Union Bank of India</option><option>Bank of India</option><option>Central Bank of India</option><option>Indian Bank</option><option>Indian Overseas Bank</option>
+        </optgroup>
+        <optgroup label="Private Sector Banks">
+          <option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option><option>Kotak Mahindra Bank</option><option>Yes Bank</option><option>IndusInd Bank</option><option>IDFC First Bank</option><option>Federal Bank</option>
+        </optgroup>
+        <optgroup label="Payments Banks">
+          <option>Paytm Payments Bank</option><option>Airtel Payments Bank</option><option>India Post Payments Bank</option><option>Fino Payments Bank</option>
+        </optgroup>
+      </select>
+      <label>IFSC Code</label>
+      <input class="inp" id="bank-ifsc" type="text" placeholder="e.g. SBIN0001234" style="text-transform:uppercase;">
+      <label>Account Holder Name</label>
+      <input class="inp" id="bank-holder" type="text" placeholder="Name as on bank">
+      <label>Bank Account Number</label>
+      <input class="inp" id="bank-acc" type="text" placeholder="Account number">
+      <label>Confirm Account Number</label>
+      <input class="inp" id="bank-acc-confirm" type="text" placeholder="Re-enter account number">
+    </div>
+    <div style="padding:0 16px;"><button class="btn btn-primary" id="save-bank-btn" onclick="saveBankCard()">Save Bank Card 🏦</button></div>
+  </div>
+
+  <!-- VIP LEVELS -->
+  <div class="page" id="sub-vip-levels" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>VIP Levels</h1></div>
+    <div style="padding:12px 0;">
+      <div class="vip-list-item"><div class="vip-icon vi0">V0</div><div><div style="font-weight:800;">VIP 0 — Starter</div><div style="font-size:.78rem;color:var(--text2);margin-top:4px;">Access basic plans · No referral rebate</div></div></div>
+      <div class="vip-list-item"><div class="vip-icon vi1">V1</div><div><div style="font-weight:800;">VIP 1 — Bronze</div><div style="font-size:.78rem;color:var(--text2);margin-top:4px;">Unlock Silver & bonus plans · 5% L1 rebate</div></div></div>
+      <div class="vip-list-item"><div class="vip-icon vi2">V2</div><div><div style="font-weight:800;">VIP 2 — Silver</div><div style="font-size:.78rem;color:var(--text2);margin-top:4px;">Unlock Gold pack · 3% L2 rebate</div></div></div>
+      <div class="vip-list-item"><div class="vip-icon vi3">V3</div><div><div style="font-weight:800;">VIP 3 — Gold</div><div style="font-size:.78rem;color:var(--text2);margin-top:4px;">Unlock Diamond pack · 2% L2 rebate</div></div></div>
+      <div class="vip-list-item"><div class="vip-icon vi4">V4</div><div><div style="font-weight:800;">VIP 4 — Platinum</div><div style="font-size:.78rem;color:var(--text2);margin-top:4px;">Unlock Platinum pack</div></div></div>
+    </div>
+  </div>
+
+  <!-- BILL -->
+  <div class="page" id="sub-bill" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>My Bill</h1></div>
+    <div class="bill-tabs">
+      <div class="bill-tab active" onclick="switchBillTab(this,'all')">All</div>
+      <div class="bill-tab" onclick="switchBillTab(this,'recharge')">Recharge</div>
+      <div class="bill-tab" onclick="switchBillTab(this,'plan')">Plans</div>
+      <div class="bill-tab" onclick="switchBillTab(this,'withdrawal')">Withdraw</div>
+      <div class="bill-tab" onclick="switchBillTab(this,'aviator')">Aviator</div>
+    </div>
+    <div id="bill-list"></div>
+  </div>
+
+  <!-- ORDERS -->
+  <div class="page" id="sub-orders" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>My Order</h1></div>
+    <div class="notice-card" id="orders-summary" style="margin-top:16px;"><h3>Plan Orders</h3><p>Loading...</p></div>
+    <div id="orders-list"></div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="page" id="sub-team" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>My Team</h1></div>
+    <div class="team-invite">
+      <div style="font-size:.85rem;font-weight:700;margin-bottom:6px;">Your Referral Link</div>
+      <div class="invite-link" id="team-invite-link">Loading...</div>
+      <button class="copy-btn" onclick="copyInviteLink()">Copy Link</button>
+    </div>
+    <div class="tl-level-card lv1">
+      <div style="font-size:.88rem;font-weight:800;">Level 1 — 5% Rebate</div>
+      <div class="lv-stats"><div class="lv-stat"><div class="lv-stat-val" id="lv1-cnt">0</div><div class="lv-stat-lbl">Invites</div></div><div class="lv-stat"><div class="lv-stat-val">5%</div><div class="lv-stat-lbl">Rebate</div></div></div>
+    </div>
+    <div class="tl-level-card lv2">
+      <div style="font-size:.88rem;font-weight:800;">Level 2 — 3% Rebate</div>
+      <div class="lv-stats"><div class="lv-stat"><div class="lv-stat-val" id="lv2-cnt">0</div><div class="lv-stat-lbl">Invites</div></div><div class="lv-stat"><div class="lv-stat-val">3%</div><div class="lv-stat-lbl">Rebate</div></div></div>
+    </div>
+    <div class="tl-level-card lv3">
+      <div style="font-size:.88rem;font-weight:800;">Level 3 — 1% Rebate</div>
+      <div class="lv-stats"><div class="lv-stat"><div class="lv-stat-val" id="lv3-cnt">0</div><div class="lv-stat-lbl">Invites</div></div><div class="lv-stat"><div class="lv-stat-val">1%</div><div class="lv-stat-lbl">Rebate</div></div></div>
+    </div>
+  </div>
+
+  <!-- POST BLOG -->
+  <div class="page" id="sub-post-blog" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>Post Blog</h1></div>
+    <div style="padding:16px;">
+      <div style="background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border);margin-bottom:12px;">
+        <div style="font-size:.88rem;font-weight:700;margin-bottom:8px;">🎁 Withdrawal Proof Reward</div>
+        <div style="font-size:.82rem;color:var(--text2);line-height:1.6;">Upload your successful withdrawal screenshot. Once admin approves, you receive <b style="color:var(--gold);">10-500</b> points!</div>
+      </div>
+      <div class="form-card" style="margin:0 0 12px;">
+        <label>Content</label>
+        <textarea class="inp" id="blog-content" placeholder="Share your experience..." rows="4"></textarea>
+        <label style="margin-top:12px;">Upload Withdrawal Screenshot</label>
+        <div class="upload-area" onclick="document.getElementById('blog-proof-upload').click()" style="margin-top:8px;">
+          <div class="upload-icon">📸</div>
+          <div class="upload-text">Tap to upload screenshot</div>
+          <input type="file" id="blog-proof-upload" accept="image/*" style="display:none;" onchange="previewBlogProof(this)">
+        </div>
+        <div id="blog-proof-preview" style="display:none;margin-top:10px;">
+          <img id="blog-proof-img" style="width:100%;border-radius:10px;max-height:200px;object-fit:cover;">
+        </div>
+      </div>
+      <button class="btn btn-primary" id="post-blog-btn" onclick="submitBlogPost()" style="background:linear-gradient(135deg,var(--green),#059669);">Publish ✅</button>
+    </div>
+  </div>
+
+  <!-- HELP -->
+  <div class="page" id="sub-help" style="display:none;">
+    <div class="sub-header"><button class="back-btn" onclick="goBack()">‹</button><h1>Help Center</h1></div>
+    <div class="help-hero"><div style="font-size:4rem;float:right;">🤖</div><h2>Service Center</h2><p>Accompany you all the way</p></div>
+    <div class="help-card"><div class="help-icon-wrap">💰</div><div class="help-text"><h3>Deposit not received?</h3><p>Contact customer service with your UTR number.</p></div></div>
+    <div class="help-card" onclick="openOnlineSupport()"><div class="help-icon-wrap">💬</div><div class="help-text"><h3>Online Service</h3><p>Working hours: 09:00 - 16:30</p></div></div>
+    <div class="help-card" onclick="openTelegram()"><div class="help-icon-wrap">✈️</div><div class="help-text"><h3>Telegram</h3><p>Join our official Telegram channel for latest updates and rewards.</p></div></div>
+  </div>
+
+  <!-- PLAN MODAL -->
+  <div class="modal-overlay" id="plan-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('plan-modal')">✕</button>
+      <div class="modal-title" id="modal-plan-title">Buy Plan</div>
+      <div class="pd-info" id="modal-plan-info"></div>
+      <div style="font-size:.82rem;color:var(--text2);margin-bottom:12px;">Earnings start from next day (24hr cycle)</div>
+      <button class="btn btn-primary" id="confirm-buy-btn" onclick="confirmBuyPlan()">Confirm Purchase ⚡</button>
+    </div>
+  </div>
+
+  <!-- BLOG RULES MODAL -->
+  <div class="modal-overlay" id="blog-rules-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('blog-rules-modal')">✕</button>
+      <div style="text-align:center;font-size:3rem;margin-bottom:8px;">🎁</div>
+      <div class="modal-title">Withdrawal Proof Reward Rules</div>
+      <div style="font-size:.85rem;color:var(--text2);line-height:1.7;">
+        <p>📌 Share a screenshot of your successful withdrawal in the Blog section.</p><br>
+        <p>🎁 Once admin approves your post, you will immediately receive a reward of <b style="color:var(--gold);">10 - 500</b> points!</p><br>
+        <p>✅ Make sure the withdrawal amount and status are clearly visible in the screenshot.</p><br>
+        <p>⚠️ Fake or duplicate screenshots will be rejected.</p>
+      </div>
+      <button class="btn btn-primary" onclick="closeModal('blog-rules-modal');showSubPage('sub-post-blog')" style="margin-top:16px;">I Know → Go Publish</button>
+    </div>
+  </div>
+
+  <!-- WALLET HISTORY MODAL -->
+  <div class="modal-overlay" id="wallet-history-modal">
+    <div class="modal-box" style="max-height:82vh;overflow-y:auto;">
+      <button class="modal-close" onclick="closeModal('wallet-history-modal')">✕</button>
+      <div class="modal-title" id="wallet-history-title">Wallet History</div>
+      <div id="wallet-history-list"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN PLAN HISTORY MODAL -->
+  <div class="modal-overlay" id="admin-plan-history-modal">
+    <div class="modal-box" style="max-height:82vh;overflow-y:auto;">
+      <button class="modal-close" onclick="closeModal('admin-plan-history-modal')">✕</button>
+      <div class="modal-title" id="admin-plan-history-title">Plan Purchase History</div>
+      <div id="admin-plan-history-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel" style="display:none;">
+  <div id="admin-login-wrap" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg);">
+    <div class="auth-card" style="max-width:380px;">
+      <div style="text-align:center;font-size:3rem;margin-bottom:8px;">🔐</div>
+      <h2 style="text-align:center;">Admin Panel</h2>
+      <p style="text-align:center;margin-bottom:20px;">RewardZone Management</p>
+      <div class="inp-group">
+        <label>Admin Password</label>
+        <input class="inp" id="admin-pass-input" type="password" placeholder="Enter admin password" onkeypress="if(event.key==='Enter')adminLogin()">
+      </div>
+      <button class="btn btn-primary" style="background:linear-gradient(135deg,#ea580c,#7c2d12);" onclick="adminLogin()">Enter Admin Panel</button>
+      <button class="btn btn-ghost" onclick="hideAdmin()">← Back to App</button>
+    </div>
+  </div>
+
+  <div id="admin-dash" style="display:none;">
+    <div class="admin-wrap">
+      <div class="admin-header"><h1>🔐 RewardZone Admin</h1><p>Manage everything from here</p></div>
+      <div class="admin-tabs">
+        <div class="admin-tab active" onclick="switchAdminTab(this,'adm-withdrawals')">💸 Withdrawals</div>
+        <div class="admin-tab" onclick="switchAdminTab(this,'adm-deposits')">💳 Deposits</div>
+        <div class="admin-tab" onclick="switchAdminTab(this,'adm-blog')">📝 Blog</div>
+        <div class="admin-tab" onclick="switchAdminTab(this,'adm-users')">👥 Users</div>
+        <div class="admin-tab" onclick="switchAdminTab(this,'adm-notices')">📢 Notices</div>
+        <div class="admin-tab" onclick="switchAdminTab(this,'adm-plans')">📊 Plans</div>
+        <div class="admin-tab" onclick="switchAdminTab(this,'adm-aviator')">✈️ Aviator</div>
+        <div class="admin-tab" onclick="switchAdminTab(this,'adm-settings')">⚙️ Settings</div>
+      </div>
+
+      <div class="admin-section active" id="adm-withdrawals"><div id="adm-wdraw-list"><div class="empty-state"><div class="ei">📭</div><p>No requests</p></div></div></div>
+      <div class="admin-section" id="adm-deposits"><div id="adm-dep-list"><div class="empty-state"><div class="ei">📭</div><p>No requests</p></div></div></div>
+      <div class="admin-section" id="adm-blog"><div id="adm-blog-list"><div class="empty-state"><div class="ei">📝</div><p>No blog posts</p></div></div></div>
+      <div class="admin-section" id="adm-users"><div id="adm-users-list"><div class="empty-state"><div class="ei">👥</div><p>No users</p></div></div></div>
+
+      <div class="admin-section" id="adm-notices">
+        <div class="settings-card">
+          <h3>Post New Notice</h3>
+          <div class="inp-group"><label>Title</label><input class="inp" id="notice-title-inp" type="text" placeholder="Notice title"></div>
+          <div class="inp-group"><label>Content</label><textarea class="inp" id="notice-content-inp" placeholder="Notice content..."></textarea></div>
+          <div class="inp-group"><label>Type</label><select class="inp" id="notice-type-inp"><option value="coin">Withdrawal Update</option><option value="info">General Info</option></select></div>
+          <button class="btn btn-primary" onclick="postNotice()">Post Notice 📢</button>
+        </div>
+      </div>
+
+      <div class="admin-section" id="adm-plans">
+        <div class="settings-card">
+          <h3>Manage Investment Plans</h3>
+          <div style="margin-bottom:8px;display:flex;gap:8px;">
+            <button onclick="switchPlanTab('stable')" id="ptab-stable" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;">Stable</button>
+            <button onclick="switchPlanTab('welfare')" id="ptab-welfare" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card2);color:var(--text2);font-size:.8rem;cursor:pointer;">Bonus</button>
+            <button onclick="switchPlanTab('new')" id="ptab-new" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card2);color:var(--text2);font-size:.8rem;cursor:pointer;">New</button>
+          </div>
+          <div id="admin-plans-list"></div>
+          <button class="btn btn-primary" onclick="addPlan(currentPlanTab)" style="margin-top:12px;background:linear-gradient(135deg,var(--green),#059669);">Add New Plan +</button>
+          <button class="btn btn-primary" onclick="savePlans()" style="margin-top:10px;">Save All Plans ✅</button>
+        </div>
+      </div>
+
+      <!-- AVIATOR ADMIN -->
+      <div class="admin-section" id="adm-aviator">
+        <div class="settings-card">
+          <h3>✈️ Aviator Game Settings</h3>
+          <div class="toggle-wrap">
+            <label>Auto Mode (Game auto-runs)</label>
+            <label class="toggle"><input type="checkbox" id="av-auto-mode"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-wrap">
+            <label>Trap Mode (Users can't win easily)</label>
+            <label class="toggle"><input type="checkbox" id="av-trap-mode"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="inp-group" style="margin-top:8px;">
+            <label>Trap Chance % (0-100, how often plane crashes early)</label>
+            <input class="inp" id="av-trap-chance" type="number" min="0" max="100" placeholder="70">
+          </div>
+          <div class="inp-group">
+            <label>Result Adjust — Force crash at multiplier (leave 0 for random)</label>
+            <input class="inp" id="av-result-adjust" type="number" step="0.01" min="0" placeholder="0 = random">
+          </div>
+          <div class="inp-group">
+            <label>Min Multiplier (default 1.10)</label>
+            <input class="inp" id="av-min-mult" type="number" step="0.01" min="1.01" placeholder="1.10">
+          </div>
+          <div class="inp-group">
+            <label>Max Multiplier (default 15.00)</label>
+            <input class="inp" id="av-max-mult" type="number" step="0.01" placeholder="15.00">
+          </div>
+          <button class="btn btn-primary" onclick="saveAviatorSettings()">Save Aviator Settings ✅</button>
+        </div>
+        <div class="settings-card">
+          <h3>Aviator Bet History</h3>
+          <div id="adm-aviator-bets"><div class="empty-state"><div class="ei">✈️</div><p>No bets recorded</p></div></div>
+          <button class="btn btn-primary" onclick="loadAviatorBetsAdmin()" style="margin-top:8px;">Refresh Bets</button>
+        </div>
+      </div>
+
+      <!-- SETTINGS (QR PER CHANNEL) -->
+      <div class="admin-section" id="adm-settings">
+        <div class="settings-card">
+          <h3>Recharge Channel Management</h3>
+          <div style="font-size:.78rem;color:var(--text2);margin-bottom:12px;">Add, edit, or remove recharge channels. Each channel has its own QR code and UPI ID.</div>
+          <div id="admin-channels-list"></div>
+          <button class="btn btn-primary" onclick="addDepositChannel()" style="margin-top:10px;background:linear-gradient(135deg,var(--green),#059669);">+ Add New Channel</button>
+          <button class="btn btn-primary" onclick="saveAdminSettings()" style="margin-top:10px;">Save All Channels ✅</button>
+        </div>
+        <div class="settings-card">
+          <h3>Wallet Adjustment</h3>
+          <div class="inp-group"><label>User Phone</label><input class="inp" id="add-coins-phone" type="text" placeholder="User phone number"></div>
+          <div class="inp-group"><label>Wallet</label><select class="inp" id="adjust-wallet-type"><option value="recharge">Recharge Wallet</option><option value="revenue">Revenue Wallet</option><option value="withdrawal">Withdrawal Wallet</option></select></div>
+          <div class="inp-group"><label>Adjustment Amount</label><input class="inp" id="add-coins-amt" type="number" placeholder="+100 add, -100 deduct"></div>
+          <div class="inp-group"><label>Reason</label><input class="inp" id="wallet-adjust-reason" type="text" placeholder="Reason shown in history"></div>
+          <button class="btn btn-primary" onclick="adminAddCoins()">Save Wallet Adjustment</button>
+          <button class="btn btn-ghost" onclick="loadWalletHistory(document.getElementById('add-coins-phone').value.trim())">View This User History</button>
+        </div>
+        <div class="settings-card">
+          <h3>Change Admin Password</h3>
+          <div class="inp-group"><label>New Password</label><input class="inp" id="new-admin-pass" type="password" placeholder="New password"></div>
+          <button class="btn btn-primary" onclick="changeAdminPass()">Update Password 🔐</button>
+        </div>
+      </div>
+      <button class="logout-admin" onclick="adminLogout()">🚪 Logout Admin</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVATE CODE MODAL -->
+<div id="private-code-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9998;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#1e1e38;border-radius:20px;padding:28px 24px;width:100%;max-width:340px;text-align:center;border:1px solid #2d2d50;animation:slideUp .3s ease;">
+    <div style="font-size:3rem;margin-bottom:12px;">🔐</div>
+    <div style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Your Private Code</div>
+    <div style="font-size:.82rem;color:#94a3b8;margin-bottom:20px;">Use this to complete registration. Screenshot it now!</div>
+    <div style="background:#12122a;border-radius:14px;padding:20px;margin-bottom:16px;border:2px solid #8b5cf6;">
+      <div style="font-size:2.2rem;font-weight:900;letter-spacing:10px;color:#a78bfa;" id="private-code-display">------</div>
+    </div>
+    <div style="font-size:.75rem;color:#ef4444;margin-bottom:20px;font-weight:600;">⚠️ This code will not be shown again!</div>
+    <button onclick="copyPrivateCode()" style="width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px;">📋 Copy Code</button>
+    <button onclick="confirmPrivateCode()" style="width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;">I've noted it → Continue ✅</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== SUPABASE CONFIG =====
+const SB_URL='https://vmolgdxhpiumfrgivpom.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtb2xnZHhocGl1bWZyZ2l2cG9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMjUxODIsImV4cCI6MjA4OTYwMTE4Mn0.TbeWGydq1nVeWnRVWxhoe44LlHQYIy0W9bqjmll3nDs';
+const TG_LINK='https://t.me/vipsercice';
+
+async function sb(table,method='GET',body=null,filter=''){
+  const url=`${SB_URL}/rest/v1/${table}${filter}`;
+  const prefer=(method==='POST'||method==='PATCH')?'return=representation':'';
+  const opts={method,headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':prefer}};
+  if(body)opts.body=JSON.stringify(body);
+  const res=await fetch(url,opts);
+  const text=await res.text();
+  if(!res.ok)throw new Error(text||('Database error '+res.status));
+  return text?JSON.parse(text):null;
+}
+const dbGet=(t,f='')=>sb(t,'GET',null,f);
+const dbPost=(t,b)=>sb(t,'POST',b);
+const dbPatch=(t,b,f)=>sb(t,'PATCH',b,f);
+
+async function saveAdminSettingsRow(data){
+  const payload={id:1,...data};
+  const res=await fetch(`${SB_URL}/rest/v1/admin_settings`,{
+    method:'POST',
+    headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=representation,resolution=merge-duplicates'},
+    body:JSON.stringify(payload)
+  });
+  const text=await res.text();
+  if(!res.ok)throw new Error(text||('Save error '+res.status));
+  return text?JSON.parse(text):null;
+}
+
+// ===== STATE =====
+let currentUser=null,activePlan=null,pageHistory=[],genOTP=null;
+let wdrawTpin='',setupTpin='',setupTpinStep=1,setupTpin1='';
+let currentPlanTab='stable';
+let selectedDepositChannel=0,processingEarnings=false;
+let DEPOSIT_CHANNELS=[{name:'UPI Fast Pay',upi:'',qr:''},{name:'UPI Deposit Pro',upi:'',qr:''}];
+
+function parseMaybeJson(v,fallback){
+  if(v==null)return fallback;
+  if(typeof v==='string'){try{return JSON.parse(v);}catch(e){return fallback;}}
+  return v;
+}
+function normalizeUserRecord(u){
+  if(!u)return u;
+  u.plans=parseMaybeJson(u.plans,[]);
+  if(!Array.isArray(u.plans))u.plans=[];
+  u.bank_card=parseMaybeJson(u.bank_card,u.bank_card);
+  return u;
+}
+function getUserPlans(u=currentUser){
+  if(!u)return [];
+  u.plans=parseMaybeJson(u.plans,[]);
+  if(!Array.isArray(u.plans))u.plans=[];
+  return u.plans;
+}
+
+// DEFAULT PLANS
+let PLANS={
+  stable:[
+    {id:'s0',title:'Starter Pack',emoji:'🛒',price:330,daily:267.3,days:46,total:12295.8,vip:0},
+    {id:'s1',title:'Silver Pack',emoji:'🥈',price:2930,daily:1436.7,days:46,total:66088.2,vip:1},
+    {id:'s2',title:'Gold Pack',emoji:'🥇',price:7930,daily:6581.9,days:46,total:302767.4,vip:2},
+    {id:'s3',title:'Diamond Pack',emoji:'💎',price:17730,daily:14893.2,days:46,total:685087.2,vip:3},
+    {id:'s4',title:'Platinum Pack',emoji:'🏆',price:27730,daily:23893.2,days:46,total:1099087.2,vip:4},
+  ],
+  welfare:[
+    {id:'w0',title:'Media & Creativity',emoji:'📺',price:1244,daily:3006.33,days:1,total:3001.52,vip:1,hour:true},
+    {id:'w1',title:'Creative Studio',emoji:'🎨',price:2500,daily:6000,days:1,total:6000,vip:1,hour:true},
+  ],
+  new:[
+    {id:'n0',title:'Launch Special',emoji:'🚀',price:500,daily:450,days:30,total:13500,vip:0},
+    {id:'n1',title:'Flash Bonus',emoji:'⚡',price:999,daily:900,days:30,total:27000,vip:0},
+  ]
+};
+
+// INIT
+window.onload=async function(){
+  const urlParams=new URLSearchParams(window.location.search);
+  const refCode=urlParams.get('ref');
+  if(refCode){
+    const refInput=document.getElementById('reg-ref');
+    if(refInput){refInput.value=refCode.toUpperCase();}
+    showAuthPage('page-register');
+    toast('Referral code applied: '+refCode.toUpperCase()+' 🎉');
+  }
+  // Check for admin URL
+  if(window.location.hash==='#admin'){showAdmin();return;}
+  try{
+    const rows=await dbGet('admin_settings','?id=eq.1');
+    if(rows&&rows.length>0&&rows[0].plans){
+      PLANS=rows[0].plans;
+      if(PLANS._depositChannels)DEPOSIT_CHANNELS=PLANS._depositChannels;
+    }
+  }catch(e){}
+  const saved=localStorage.getItem('rz_phone');
+  if(saved){
+    try{
+      const users=await dbGet('users',`?phone=eq.${saved}`);
+      if(users&&users.length>0){currentUser=normalizeUserRecord(users[0]);launchApp();return;}
+    }catch(e){}
+  }
+};
+
+// AUTH
+function showAuthPage(id){document.querySelectorAll('.auth-wrap').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showForgotPassword(){const phone=prompt('Enter your registered mobile number');if(!phone)return;toast('Password reset ke liye customer service/admin se contact karein.');}
+
+let generatedCode='';
+function generatePrivateCode(){
+  const phone=document.getElementById('reg-phone').value.trim();
+  if(phone.length!==10){toast('Enter valid 10 digit number first');return;}
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  generatedCode='';
+  for(let i=0;i<6;i++)generatedCode+=chars[Math.floor(Math.random()*chars.length)];
+  document.getElementById('private-code-display').textContent=generatedCode;
+  document.getElementById('private-code-modal').style.display='flex';
+}
+function confirmPrivateCode(){
+  document.getElementById('private-code-modal').style.display='none';
+  document.getElementById('reg-otp').value=generatedCode;
+  document.getElementById('otp-note').textContent='✅ Code entered — fill password & register!';
+}
+function copyPrivateCode(){
+  navigator.clipboard.writeText(generatedCode).then(()=>toast('Code copied! 📋')).catch(()=>toast('Your code: '+generatedCode));
+}
+
+async function doRegister(){
+  const name=document.getElementById('reg-name').value.trim();
+  const phone=document.getElementById('reg-phone').value.trim();
+  const otp=document.getElementById('reg-otp').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const ref=document.getElementById('reg-ref').value.trim().toUpperCase();
+  if(!name||!phone||!otp||!pass){toast('Please fill all fields');return;}
+  if(phone.length!==10){toast('Enter valid phone number');return;}
+  if(pass.length<6){toast('Password must be 6+ characters');return;}
+  const enteredCode=document.getElementById('reg-otp').value.trim().toUpperCase();
+  if(!generatedCode){toast('Please get your private code first');return;}
+  if(enteredCode!==generatedCode){toast('Wrong private code! Click Get Code again.');return;}
+  const btn=document.getElementById('reg-btn');
+  btn.disabled=true;btn.innerHTML='<span class="loader"></span>Creating...';
+  try{
+    const existing=await dbGet('users',`?phone=eq.${phone}`);
+    if(existing&&existing.length>0){toast('Account already exists');btn.disabled=false;btn.textContent='Create Account';return;}
+  }catch(e){}
+  const refCode=Math.random().toString(36).substr(2,6).toUpperCase();
+  try{
+    await dbPost('users',{phone,name,password:pass,ref_code:refCode,referred_by:ref||null,balance:0,income:0,vip:0,checkin_date:'',has_spun:false,spin_date:'',bank_card:null,plans:[],tpin:''});
+    toast('Account created! Please login.');
+    showAuthPage('page-login');
+  }catch(e){toast('Error: '+e.message);}
+  btn.disabled=false;btn.textContent='Create Account';
+}
+
+async function doLogin(){
+  const phone=document.getElementById('login-phone').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  if(!phone||!pass){toast('Enter phone and password');return;}
+  if(phone==='rzadmin'&&pass==='access'){showAdmin();return;}
+  const btn=document.getElementById('login-btn');
+  btn.disabled=true;btn.innerHTML='<span class="loader"></span>Logging in...';
+  try{
+    const users=await dbGet('users',`?phone=eq.${phone}`);
+    if(!users||users.length===0||users[0].password!==pass){toast('Invalid phone or password');btn.disabled=false;btn.textContent='Login Now';return;}
+    currentUser=normalizeUserRecord(users[0]);localStorage.setItem('rz_phone',phone);launchApp();
+  }catch(e){toast('Login error: '+e.message);}
+  btn.disabled=false;btn.textContent='Login Now';
+}
+
+function doLogout(){
+  currentUser=null;localStorage.removeItem('rz_phone');
+  stopAviatorGame();
+  document.getElementById('main-app').style.display='none';
+  document.querySelectorAll('.auth-wrap').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-login').classList.add('active');
+}
+
+function launchApp(){
+  document.querySelectorAll('.auth-wrap').forEach(p=>p.classList.remove('active'));
+  document.getElementById('main-app').style.display='block';
+  refreshUI();switchNav('home');renderInvestPlans('stable');loadNotices();loadDepositChannels();processPlanEarnings();
+}
+
+// UI HELPERS
+function fmtMoney(v){return Number(Number(v||0).toFixed(2)).toLocaleString();}
+function getWallets(u=currentUser){
+  const bank=(u&&u.bank_card&&typeof u.bank_card==='object')?u.bank_card:{};
+  const w=bank._wallets||{};
+  return{recharge:Number(u&&u.balance||0),revenue:Number(u&&u.income||0),withdrawal:Number(w.withdrawal||0)};
+}
+function buildWalletPatch(w,extra={}){
+  const bank=(currentUser.bank_card&&typeof currentUser.bank_card==='object')?currentUser.bank_card:{};
+  bank._wallets={...((bank._wallets)||{}),withdrawal:Number((w.withdrawal||0).toFixed(2))};
+  return{balance:Number((w.recharge||0).toFixed(2)),income:Number((w.revenue||0).toFixed(2)),bank_card:bank,...extra};
+}
+function applyWallets(w){
+  if(!currentUser)return;
+  currentUser.balance=w.recharge;currentUser.income=w.revenue;
+  const bank=(currentUser.bank_card&&typeof currentUser.bank_card==='object')?currentUser.bank_card:{};
+  if(!bank._wallets)bank._wallets={};
+  bank._wallets.withdrawal=w.withdrawal;
+  currentUser.bank_card=bank;
+}
+
+function refreshUI(){
+  if(!currentUser)return;
+  const w=getWallets();
+  const total=w.recharge+w.revenue+w.withdrawal;
+  const setT=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  setT('bal-total-wallet',fmtMoney(total));
+  setT('bal-income',fmtMoney(w.revenue));
+  setT('bal-coins',fmtMoney(w.recharge));
+  setT('bal-revenue-mini',fmtMoney(w.revenue));
+  setT('bal-withdrawal',fmtMoney(w.withdrawal));
+  setT('recharge-bal',fmtMoney(w.recharge));
+  setT('wdraw-bal',fmtMoney(w.withdrawal));
+  const init=(currentUser.name||'U')[0].toUpperCase();
+  document.querySelectorAll('#top-avatar,#acc-avatar-big').forEach(el=>{if(el)el.textContent=init;});
+  const shortName=currentUser.name||'User';
+  setT('top-name',shortName.length>10?shortName.slice(0,10)+'..':shortName);
+  setT('acc-name-big',currentUser.name||'User');
+  setT('acc-info-big','ID: '+currentUser.phone);
+  const bank=(currentUser.bank_card&&typeof currentUser.bank_card==='object'&&currentUser.bank_card.acc)?currentUser.bank_card:{};
+  setT('wdraw-bank-num',bank.acc?('**** '+bank.acc.slice(-4)):'**** **** ****');
+  setT('wdraw-bank-name',bank.bank||'No bank card linked');
+  const teamLink=`${window.location.href.split('?')[0]}?ref=${currentUser.ref_code||''}`;
+  setT('team-invite-link',teamLink);
+}
+
+// NAVIGATION
+function hideAllPages(){
+  document.querySelectorAll('.page').forEach(p=>{
+    p.classList.remove('active');
+    p.style.display='';
+  });
+  if(document.getElementById('sub-aviator')){
+    try{stopAviatorGame();}catch(e){}
+  }
+}
+
+function switchNav(page){
+  hideAllPages();
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const pg=document.getElementById('page-'+page);if(pg)pg.classList.add('active');
+  const nav=document.getElementById('nav-'+page);if(nav)nav.classList.add('active');
+  pageHistory=[];
+  if(page==='blog')loadBlogPosts();
+  if(page==='account')loadTeam();
+  document.getElementById('main-topbar').style.display='block';
+}
+
+function showSubPage(id){
+  const prevId=document.querySelector('.page.active')?.id||'page-home';
+  hideAllPages();
+  const pg=document.getElementById(id);
+  if(!pg)return;
+  pageHistory.push(prevId);
+  pg.classList.add('active');
+  pg.style.display='block';
+  document.getElementById('main-topbar').style.display='none';
+  if(id==='sub-bill')loadBills('all');
+  if(id==='sub-orders')loadMyOrders();
+  if(id==='sub-team')loadTeam();
+}
+
+function goBack(){
+  hideAllPages();
+  const prev=pageHistory.pop()||'page-home';
+  const pg=document.getElementById(prev);
+  if(pg){pg.classList.add('active');pg.style.display='block';}
+  else switchNav('home');
+  const isSubPage=prev&&prev.startsWith('sub-');
+  document.getElementById('main-topbar').style.display=isSubPage?'none':'block';
+}
+
+function openTelegram(){window.open(TG_LINK,'_blank');}
+function openOnlineSupport(){window.open(TG_LINK,'_blank');}
+function copyInviteLink(){
+  const link=document.getElementById('team-invite-link').textContent;
+  navigator.clipboard.writeText(link).then(()=>toast('Link copied! 📋')).catch(()=>toast('Copy failed'));
+}
+
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+// INVEST PLANS
+function renderInvestPlans(type){
+  const el=document.getElementById('inv-content');if(!el)return;
+  const plans=(PLANS[type]||[]);
+  if(!plans.length){el.innerHTML='<div class="empty-state"><div class="ei">📊</div><p>No plans available</p></div>';return;}
+  el.innerHTML=plans.map(p=>`<div class="plan-card">
+    <div class="plan-img">${p.image?`<img src="${p.image}">`:`<span class="emoji-fallback">${p.emoji||'📊'}</span>`}
+      ${p.vip>0?`<div class="vip-badge">VIP${p.vip}</div>`:''}
+    </div>
+    <div class="plan-body">
+      <div class="plan-title">${p.title}</div>
+      ${p.details?`<div style="font-size:.78rem;color:var(--text2);margin-bottom:8px;">${p.details}</div>`:''}
+      <div class="plan-row"><span>Price</span><span>₹${fmtMoney(p.price)}</span></div>
+      <div class="plan-row"><span>VIP Level</span><span>VIP${p.vip||0}</span></div>
+      <div class="plan-row"><span>Duration</span><span>${p.hour?'1 Hour':(p.days||0)+' Days'}</span></div>
+      <div class="plan-row"><span>${p.hour?'Hour':'Daily'} Earnings</span><span>₹${fmtMoney(p.daily)}</span></div>
+      <div class="plan-row"><span>Total Revenue</span><span>₹${fmtMoney(p.total)}</span></div>
+      <button class="plan-invest-btn" onclick='openPlanModal(${JSON.stringify(p)})'>
+        <span class="plan-price">₹${fmtMoney(p.price)}</span><span>⚡ Invest Now</span>
+      </button>
+    </div>
+  </div>`).join('');
+}
+function switchInvTab(el,type){currentPlanTab=type;document.querySelectorAll('.inv-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderInvestPlans(type);}
+function openPlanModal(p){
+  activePlan=p;
+  document.getElementById('modal-plan-title').textContent='Buy '+p.title;
+  document.getElementById('modal-plan-info').innerHTML=`
+    <div class="pd-stat"><div class="pd-val">₹${Number(p.price).toLocaleString()}</div><div class="pd-lbl">Price</div></div>
+    <div class="pd-stat"><div class="pd-val">₹${Number(p.daily).toLocaleString()}</div><div class="pd-lbl">Daily Earn</div></div>
+    <div class="pd-stat"><div class="pd-val">${p.hour?'1 Hr':p.days+'d'}</div><div class="pd-lbl">Duration</div></div>
+    <div class="pd-stat"><div class="pd-val">₹${Number(p.total).toLocaleString()}</div><div class="pd-lbl">Total</div></div>`;
+  document.getElementById('plan-modal').classList.add('open');
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+async function confirmBuyPlan(){
+  if(!activePlan)return;
+  const wallets=getWallets();
+  if(wallets.recharge<activePlan.price){toast('Recharge Wallet balance low. Please recharge!');closeModal('plan-modal');return;}
+  const userVip=currentUser.vip||0;
+  if((activePlan.vip||0)>userVip){toast(`❌ This plan needs VIP${activePlan.vip}. Your level: VIP${userVip}.`);closeModal('plan-modal');return;}
+  const btn=document.getElementById('confirm-buy-btn');
+  btn.disabled=true;btn.innerHTML='<span class="loader"></span>Processing...';
+  const now=new Date();
+  const period=activePlan.hour?3600000:86400000;
+  const plans=getUserPlans();
+  plans.push({...activePlan,orderId:'ORD'+now.getTime(),purchasedAt:now.toISOString(),nextUpdate:new Date(now.getTime()+period).toISOString(),earned:0,earnedDays:0,completed:false,withdrawalMoved:false});
+  wallets.recharge-=Number(activePlan.price||0);
+  try{
+    await dbPatch('users',buildWalletPatch(wallets,{plans,vip:Math.max(currentUser.vip||0,activePlan.vip||0)}),`?phone=eq.${currentUser.phone}`);
+    await dbPost('bills',{user_phone:currentUser.phone,type:'buy product',amount:-activePlan.price,bal_type:'recharge wallet'});
+    applyWallets(wallets);currentUser.plans=plans;currentUser.vip=Math.max(currentUser.vip||0,activePlan.vip||0);
+    closeModal('plan-modal');toast('Plan purchased! 🎉');refreshUI();
+    setTimeout(()=>showSubPage('sub-orders'),400);
+  }catch(e){toast('Error: '+e.message);}
+  btn.disabled=false;btn.textContent='Confirm Purchase ⚡';
+}
+
+// PLAN EARNINGS
+async function processPlanEarnings(){
+  if(!currentUser||processingEarnings)return;
+  processingEarnings=true;
+  try{
+    const plans=getUserPlans();
+    if(!plans.length){processingEarnings=false;return;}
+    const wallets=getWallets();
+    const now=Date.now();let changed=false;
+    for(const p of plans){
+      if(p.completed&&p.withdrawalMoved)continue;
+      const period=p.hour?3600000:86400000;
+      const totalCycles=p.hour?1:Number(p.days||0);
+      p.earnedDays=Number(p.earnedDays||0);p.earned=Number(p.earned||0);
+      let next=p.nextUpdate?new Date(p.nextUpdate).getTime():new Date(p.purchasedAt||Date.now()).getTime()+period;
+      while(next<=now&&p.earnedDays<totalCycles){
+        const add=Number(p.daily||0);
+        wallets.revenue+=add;p.earned+=add;p.earnedDays+=1;changed=true;
+        await dbPost('bills',{user_phone:currentUser.phone,type:'plan daily earning',amount:add,bal_type:'revenue wallet'}).catch(()=>{});
+        next+=period;
+      }
+      p.nextUpdate=new Date(next).toISOString();
+      if(p.earnedDays>=totalCycles&&!p.withdrawalMoved){
+        const moveAmt=Number(p.earned||p.total||0);
+        wallets.revenue=Math.max(0,wallets.revenue-moveAmt);
+        wallets.withdrawal+=moveAmt;
+        p.completed=true;p.withdrawalMoved=true;changed=true;
+        await dbPost('bills',{user_phone:currentUser.phone,type:'plan completed transfer',amount:moveAmt,bal_type:'withdrawal wallet'}).catch(()=>{});
+      }
+    }
+    if(changed){
+      await dbPatch('users',buildWalletPatch(wallets,{plans}),`?phone=eq.${currentUser.phone}`);
+      applyWallets(wallets);currentUser.plans=plans;toast('Plan earnings updated');refreshUI();
+    }
+  }catch(e){}
+  processingEarnings=false;
+}
+
+// NOTICES
+async function loadNotices(){
+  try{
+    const notices=await dbGet('notices','?order=date.desc');
+    const list=document.getElementById('notice-list');
+    if(!notices||notices.length===0){list.innerHTML='<div class="empty-state"><div class="ei">📢</div><p>No notices yet</p></div>';return;}
+    list.innerHTML=notices.map(n=>`<div class="notice-card">
+      <span class="notice-badge ${n.type==='coin'?'nb-coin':'nb-info'}">${n.type==='coin'?'💰 Withdrawal':'ℹ️ Info'}</span>
+      <h3>${n.title}</h3><p>${n.content}</p>
+      <div class="notice-date">${new Date(n.date).toLocaleString()}</div>
+    </div>`).join('');
+  }catch(e){}
+}
+
+// CHECK IN
+async function doCheckin(){
+  if(!currentUser)return;
+  const today=new Date().toDateString();
+  if(currentUser.checkin_date===today){toast('Already checked in today!');return;}
+  try{
+    const newBal=(currentUser.balance||0)+3;
+    await dbPatch('users',{balance:newBal,checkin_date:today},`?phone=eq.${currentUser.phone}`);
+    await dbPost('bills',{user_phone:currentUser.phone,type:'task rewards',amount:3,bal_type:'recharge balance'});
+    currentUser.balance=newBal;currentUser.checkin_date=today;
+    toast('Check-in bonus: ₹3 added! 🎁');refreshUI();
+  }catch(e){toast('Error: '+e.message);}
+}
+
+// TPIN
+function tpinKey(mode,key){
+  if(mode==='wdraw'){
+    if(key==='back'){wdrawTpin=wdrawTpin.slice(0,-1);}
+    else if(wdrawTpin.length<4){wdrawTpin+=key;}
+    for(let i=0;i<4;i++){const d=document.getElementById('wd'+i);if(d)d.className='tpin-dot'+(i<wdrawTpin.length?' filled':'');}
+  }else if(mode==='setup'){
+    if(setupTpinStep===1){
+      if(key==='back'){setupTpin=setupTpin.slice(0,-1);}
+      else if(setupTpin.length<4){setupTpin+=key;}
+      for(let i=0;i<4;i++){const d=document.getElementById('st'+i);if(d)d.className='tpin-dot'+(i<setupTpin.length?' filled':'');}
+      if(setupTpin.length===4){
+        setTimeout(()=>{setupTpin1=setupTpin;setupTpin='';setupTpinStep=2;
+          document.getElementById('tpin-setup-label').textContent='Confirm TPIN';
+          for(let i=0;i<4;i++){const d=document.getElementById('st'+i);if(d)d.className='tpin-dot';}
+        },300);
+      }
+    }else{
+      if(key==='back'){setupTpin=setupTpin.slice(0,-1);}
+      else if(setupTpin.length<4){setupTpin+=key;}
+      for(let i=0;i<4;i++){const d=document.getElementById('st'+i);if(d)d.className='tpin-dot'+(i<setupTpin.length?' filled':'');}
+      if(setupTpin.length===4){
+        setTimeout(async()=>{
+          if(setupTpin===setupTpin1){
+            try{
+              await dbPatch('users',{tpin:setupTpin},`?phone=eq.${currentUser.phone}`);
+              currentUser.tpin=setupTpin;toast('TPIN set! 🔐');
+              setupTpin='';setupTpin1='';setupTpinStep=1;
+              document.getElementById('tpin-setup-label').textContent='Enter new TPIN';
+              for(let i=0;i<4;i++){const d=document.getElementById('st'+i);if(d)d.className='tpin-dot';}
+              goBack();
+            }catch(e){toast('Error saving TPIN');}
+          }else{
+            toast('PINs do not match!');setupTpin='';setupTpinStep=1;setupTpin1='';
+            document.getElementById('tpin-setup-label').textContent='Enter new TPIN';
+            for(let i=0;i<4;i++){const d=document.getElementById('st'+i);if(d)d.className='tpin-dot';}
+          }
+        },300);
+      }
+    }
+  }
+}
+
+// RECHARGE
+function selectQA(el,v){document.querySelectorAll('.qa-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');document.getElementById('recharge-amount').value=v;}
+function updateQuickSelect(v){document.querySelectorAll('.qa-btn').forEach(b=>b.classList.toggle('selected',parseInt(b.textContent)===parseInt(v)));}
+
+function getActiveDepositChannel(){
+  if(!Array.isArray(DEPOSIT_CHANNELS)||DEPOSIT_CHANNELS.length===0)DEPOSIT_CHANNELS=[{name:'UPI Fast Pay',upi:'',qr:''}];
+  if(selectedDepositChannel<0||selectedDepositChannel>=DEPOSIT_CHANNELS.length)selectedDepositChannel=0;
+  return DEPOSIT_CHANNELS[selectedDepositChannel]||DEPOSIT_CHANNELS[0]||{};
+}
+function renderPaymentQR(){
+  const ch=getActiveDepositChannel();
+  const channelEl=document.getElementById('pay-channel-show');
+  const upiEl=document.getElementById('upi-id-show');
+  const img=document.getElementById('qr-img-display');
+  const ph=document.getElementById('qr-placeholder');
+  if(channelEl)channelEl.textContent=ch.name||'UPI Fast Pay';
+  if(upiEl)upiEl.textContent=ch.upi||'UPI ID not set';
+  if(!img||!ph)return;
+  if(ch.qr&&ch.qr.length>10){img.src=ch.qr;img.style.display='block';ph.style.display='none';}
+  else{img.removeAttribute('src');img.style.display='none';ph.style.display='block';ph.textContent='QR not uploaded';}
+}
+async function loadDepositChannels(){
+  renderRechargeChannels();
+  try{
+    const rows=await Promise.race([
+      dbGet('admin_settings','?id=eq.1'),
+      new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),8000))
+    ]);
+    if(rows&&rows.length>0){
+      const ch=normalizeDepositChannels(rows[0]);
+      if(ch&&ch.length)DEPOSIT_CHANNELS=ch;
+      localStorage.setItem('rz_deposit_channels',JSON.stringify(DEPOSIT_CHANNELS));
+      renderRechargeChannels();
+    }
+  }catch(e){
+    const cached=localStorage.getItem('rz_deposit_channels');
+    if(cached)try{DEPOSIT_CHANNELS=JSON.parse(cached);renderRechargeChannels();}catch(e2){}
+  }
+}
+function normalizeDepositChannels(settings){
+  let plans=settings&&settings.plans;
+  if(typeof plans==='string'){try{plans=JSON.parse(plans);}catch(e){plans=null;}}
+  if(plans&&Array.isArray(plans._depositChannels))return plans._depositChannels;
+  if(settings&&(settings.upi_id||settings.qr_image))return[{name:'UPI Fast Pay',upi:settings.upi_id||'',qr:settings.qr_image||''}];
+  return null;
+}
+function renderRechargeChannels(){
+  const list=document.getElementById('recharge-channel-list');if(!list)return;
+  list.innerHTML=DEPOSIT_CHANNELS.map((c,i)=>`<div class="channel-opt ${i===selectedDepositChannel?'selected':''}" onclick="selectDepositChannel(${i})">
+    <div><div style="font-weight:700;font-size:.9rem;">${c.name||('Channel '+(i+1))}</div><div style="font-size:.75rem;color:var(--text2);margin-top:2px;">UPI · UTR + screenshot required</div></div>
+    <div class="radio-circle ${i===selectedDepositChannel?'checked':''}">${i===selectedDepositChannel?'<div class="radio-dot"></div>':''}</div>
+  </div>`).join('');
+}
+function selectDepositChannel(i){selectedDepositChannel=i;renderRechargeChannels();}
+
+function goToQR(){
+  const amt=document.getElementById('recharge-amount').value;
+  if(!amt||parseInt(amt)<10){toast('Enter valid amount');return;}
+  document.getElementById('pay-amount-show').textContent=amt;
+  renderPaymentQR();showSubPage('sub-qrpay');
+  loadDepositChannels().then(()=>renderPaymentQR());
+}
+
+function previewProof(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{document.getElementById('proof-img').src=e.target.result;document.getElementById('proof-preview').style.display='block';};
+  reader.readAsDataURL(file);
+}
+
+async function submitRecharge(){
+  const amt=document.getElementById('pay-amount-show').textContent;
+  const utr=document.getElementById('utr-input').value.trim();
+  const proof=document.getElementById('proof-img').src;
+  if(!proof||proof===window.location.href){toast('Please upload payment screenshot');return;}
+  const btn=document.getElementById('submit-recharge-btn');
+  btn.disabled=true;btn.innerHTML='<span class="loader"></span>Submitting...';
+  try{
+    const ch=DEPOSIT_CHANNELS[selectedDepositChannel]||DEPOSIT_CHANNELS[0];
+    await dbPost('deposit_requests',{user_phone:currentUser.phone,user_name:currentUser.name,amount:parseInt(amt),utr:utr||'N/A',proof,status:'pending',channel:ch.name||'UPI'});
+    toast('Deposit submitted! Admin will verify soon ✅');
+    document.getElementById('proof-img').src='';document.getElementById('proof-preview').style.display='none';document.getElementById('utr-input').value='';
+    goBack();goBack();
+  }catch(e){toast('Error: '+e.message);}
+  btn.disabled=false;btn.textContent='Submit Payment Proof ✅';
+}
+
+// WITHDRAW
+async function submitWithdraw(){
+  const amt=parseInt(document.getElementById('wdraw-amount').value);
+  const wallets=getWallets();
+  if(!currentUser.bank_card||!currentUser.bank_card.acc){toast('Add bank card first');showSubPage('sub-bank');return;}
+  if(!amt||amt<107){toast('Minimum withdrawal ₹107');return;}
+  if(amt>wallets.withdrawal){toast('Insufficient balance');return;}
+  if(!currentUser.tpin){toast('Please set TPIN first');showSubPage('sub-tpin-setup');return;}
+  if(wdrawTpin.length<4){toast('Enter 4-digit TPIN');return;}
+  if(wdrawTpin!==currentUser.tpin){toast('Wrong TPIN!');wdrawTpin='';for(let i=0;i<4;i++){const d=document.getElementById('wd'+i);if(d)d.className='tpin-dot';}return;}
+  try{
+    await dbPost('withdraw_requests',{user_phone:currentUser.phone,user_name:currentUser.name,amount:amt,bank:currentUser.bank_card.bank,acc:currentUser.bank_card.acc,ifsc:currentUser.bank_card.ifsc,holder:currentUser.bank_card.holder,status:'pending'});
+    wallets.withdrawal-=amt;
+    await dbPatch('users',buildWalletPatch(wallets),`?phone=eq.${currentUser.phone}`);
+    await dbPost('bills',{user_phone:currentUser.phone,type:'withdrawal',amount:-amt,bal_type:'withdrawal wallet'});
+    applyWallets(wallets);wdrawTpin='';
+    for(let i=0;i<4;i++){const d=document.getElementById('wd'+i);if(d)d.className='tpin-dot';}
+    toast('Withdrawal request submitted! ✅');refreshUI();goBack();
+  }catch(e){toast('Error: '+e.message);}
+}
+
+// BANK CARD
+async function saveBankCard(){
+  const bank=document.getElementById('bank-name-sel').value;
+  const ifsc=document.getElementById('bank-ifsc').value.trim().toUpperCase();
+  const holder=document.getElementById('bank-holder').value.trim();
+  const acc=document.getElementById('bank-acc').value.trim();
+  const accConfirm=document.getElementById('bank-acc-confirm').value.trim();
+  if(!ifsc||!holder||!acc){toast('Fill all fields');return;}
+  if(acc!==accConfirm){toast('Account numbers do not match!');return;}
+  const btn=document.getElementById('save-bank-btn');btn.disabled=true;
+  try{
+    const card={...((currentUser.bank_card&&typeof currentUser.bank_card==='object')?currentUser.bank_card:{}),bank,ifsc,holder,acc};
+    await dbPatch('users',{bank_card:card},`?phone=eq.${currentUser.phone}`);
+    currentUser.bank_card=card;toast('Bank card saved! 🏦');refreshUI();goBack();
+  }catch(e){toast('Error: '+e.message);}
+  btn.disabled=false;btn.textContent='Save Bank Card 🏦';
+}
+
+// BILLS
+async function loadBills(filter){
+  const list=document.getElementById('bill-list');
+  list.innerHTML='<div class="empty-state"><div class="ei">⏳</div><p>Loading...</p></div>';
+  try{
+    let bills=await dbGet('bills',`?user_phone=eq.${currentUser.phone}&order=date.desc`);
+    if(filter!=='all')bills=(bills||[]).filter(b=>b.type.toLowerCase().includes(filter)||b.bal_type.toLowerCase().includes(filter));
+    if(!bills||bills.length===0){list.innerHTML='<div class="empty-state"><div class="ei">📋</div><p>No transactions yet</p></div>';return;}
+    list.innerHTML=bills.map(b=>`<div class="bill-item">
+      <div class="bi-left"><h4>${b.type}</h4><p>${new Date(b.date).toLocaleString()} · ${b.bal_type}</p></div>
+      <div class="bi-amt ${b.amount>0?'plus':'minus'}">${b.amount>0?'+':''}₹${Math.abs(b.amount)}</div>
+    </div>`).join('');
+  }catch(e){list.innerHTML='<div class="empty-state"><div class="ei">❌</div><p>Error loading</p></div>';}
+}
+function switchBillTab(el,f){document.querySelectorAll('.bill-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');loadBills(f);}
+
+// ORDERS
+async function loadMyOrders(){
+  const list=document.getElementById('orders-list');
+  const summary=document.getElementById('orders-summary');
+  if(!list||!summary||!currentUser)return;
+  list.innerHTML='<div class="empty-state"><div class="ei">⏳</div><p>Loading...</p></div>';
+  try{
+    const users=await dbGet('users',`?phone=eq.${currentUser.phone}`);
+    if(users&&users.length>0)currentUser=normalizeUserRecord({...currentUser,...users[0]});
+  }catch(e){}
+  try{await processPlanEarnings();}catch(e){}
+  const plans=getUserPlans();
+  if(!plans.length){
+    summary.innerHTML='<h3>Plan Orders</h3><p>No plan purchased yet.</p>';
+    list.innerHTML='<div class="empty-state"><div class="ei">🛍️</div><p>No orders yet</p></div>';return;
+  }
+  const active=plans.filter(p=>!p.completed&&!p.withdrawalMoved).length;
+  const totalEarned=plans.reduce((s,p)=>s+Number(p.earned||0),0);
+  summary.innerHTML=`<h3>Plan Orders</h3><p>Total: <b>${plans.length}</b> · Active: <b>${active}</b> · Completed: <b>${plans.length-active}</b><br>Total earned: <b style="color:var(--gold);">₹${fmtMoney(totalEarned)}</b></p>`;
+  list.innerHTML=plans.map((p,i)=>{
+    const period=p.hour?3600000:86400000;
+    const totalCycles=p.hour?1:Number(p.days||0);
+    const bought=p.purchasedAt?new Date(p.purchasedAt):new Date();
+    const endDate=new Date(bought.getTime()+period*totalCycles);
+    const status=p.withdrawalMoved?'Moved to Withdrawal':(p.completed?'Completed':'Active');
+    const badgeClass=p.withdrawalMoved||p.completed?'sb-approved':'sb-pending';
+    return `<div class="order-card" id="order-card-${i}">
+      <div class="order-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="order-title-row">
+          <div><div class="order-title">${p.title||'Plan'}</div><div class="order-sub">Bought: ${bought.toLocaleString()}</div></div>
+          <span class="status-badge ${badgeClass}">${status}</span>
+        </div>
+        <div class="order-stats">
+          <div class="order-stat"><div>Price</div><div>₹${fmtMoney(p.price)}</div></div>
+          <div class="order-stat"><div>Earned</div><div>${p.earnedDays||0}/${totalCycles}</div></div>
+          <div class="order-stat"><div>Total</div><div>₹${fmtMoney(p.total)}</div></div>
+        </div>
+        <div style="font-size:.76rem;color:var(--text2);margin-top:10px;">End: ${endDate.toLocaleString()}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// BLOG
+async function loadBlogPosts(){
+  const list=document.getElementById('blog-posts-list');
+  try{
+    const posts=await dbGet('blog_posts','?status=eq.approved&order=date.desc');
+    if(!posts||posts.length===0){list.innerHTML='<div class="empty-state"><div class="ei">📝</div><p>No posts yet. Be the first!</p></div>';return;}
+    list.innerHTML=posts.map(p=>`<div class="blog-post-card">
+      <div class="blog-post-header">
+        <div class="blog-avatar">${(p.user_name||'U')[0]}</div>
+        <div><div style="font-weight:700;font-size:.88rem;">${p.user_name}</div><div class="blog-phone">${p.user_phone.slice(0,-4)+'****'}</div></div>
+      </div>
+      <div class="blog-post-content">${p.content}</div>
+      ${p.proof?`<img class="blog-post-img" src="${p.proof}">`:''}
+      <div class="blog-post-footer">
+        <span class="blog-reward">+₹${p.reward||0} Reward</span>
+        <span class="blog-date">${new Date(p.date).toLocaleDateString()}</span>
+      </div>
+    </div>`).join('');
+  }catch(e){}
+}
+function showBlogRules(){document.getElementById('blog-rules-modal').classList.add('open');}
+function previewBlogProof(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{document.getElementById('blog-proof-img').src=e.target.result;document.getElementById('blog-proof-preview').style.display='block';};
+  reader.readAsDataURL(file);
+}
+async function submitBlogPost(){
+  const content=document.getElementById('blog-content').value.trim();
+  const proof=document.getElementById('blog-proof-img').src;
+  if(!content){toast('Write something!');return;}
+  if(!proof||proof===window.location.href){toast('Upload withdrawal screenshot!');return;}
+  const btn=document.getElementById('post-blog-btn');
+  btn.disabled=true;btn.innerHTML='<span class="loader"></span>Posting...';
+  try{
+    await dbPost('blog_posts',{user_phone:currentUser.phone,user_name:currentUser.name,content,proof,status:'pending',reward:0});
+    toast('Blog post submitted! Admin will review. 🎉');
+    document.getElementById('blog-content').value='';
+    document.getElementById('blog-proof-img').src='';document.getElementById('blog-proof-preview').style.display='none';
+    goBack();
+  }catch(e){toast('Error: '+e.message);}
+  btn.disabled=false;btn.textContent='Publish ✅';
+}
+
+// TEAM
+async function loadTeam(){
+  if(!currentUser)return;
+  try{
+    const users=await dbGet('users','');
+    if(!users)return;
+    let l1=0,l2=0,l3=0;
+    const l1users=users.filter(u=>u.referred_by===currentUser.ref_code);
+    l1=l1users.length;
+    const l1codes=l1users.map(u=>u.ref_code).filter(Boolean);
+    const l2users=users.filter(u=>l1codes.includes(u.referred_by));
+    l2=l2users.length;
+    const l2codes=l2users.map(u=>u.ref_code).filter(Boolean);
+    l3=users.filter(u=>l2codes.includes(u.referred_by)).length;
+    const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+    s('lv1-cnt',l1);s('lv2-cnt',l2);s('lv3-cnt',l3);
+  }catch(e){}
+}
+
+// ============================================================
+// ===== AVIATOR GAME ENGINE =====
+// ============================================================
+let avMode='1min'; // '1min' or '10sec'
+let avPhase='waiting'; // waiting|betting|flying|crashed
+let avMultiplier=1.00;
+let avCrashAt=1.5;
+let avBetTimer=null;
+let avFlyTimer=null;
+let avWaitTimer=null;
+let avCountdownInterval=null;
+let avTimeLeft=0;
+let avUserBets=[null,null]; // [slot1, slot2] {amount, cashedOut, cashoutMult}
+let avDummyBets=[];
+let avHistory=[];
+let avSettings={autoMode:true,trapMode:false,trapChance:70,resultAdjust:0,minMult:1.10,maxMult:15.00};
+let avRoundId=null;
+let avAnimFrame=null;
+let avPlaneX=10,avPlaneY=20,avTrailPoints=[];
+let avFlyStartTime=0;
+
+const DUMMY_NAMES=['Rahul K.','Priya S.','Amit V.','Sunita R.','Rohit M.','Deepak P.','Kavita J.','Sanjay L.','Meena D.','Vikas T.'];
+const DUMMY_BETS_COUNT=8;
+
+async function loadAviatorSettings(){
+  try{
+    const rows=await dbGet('admin_settings','?id=eq.1');
+    if(rows&&rows.length>0&&rows[0].plans&&rows[0].plans._aviator){
+      const a=rows[0].plans._aviator;
+      avSettings.autoMode=a.autoMode!==undefined?a.autoMode:true;
+      avSettings.trapMode=a.trapMode||false;
+      avSettings.trapChance=a.trapChance||70;
+      avSettings.resultAdjust=a.resultAdjust||0;
+      avSettings.minMult=a.minMult||1.10;
+      avSettings.maxMult=a.maxMult||15.00;
+    }
+  }catch(e){}
+}
+
+function showAviator(mode){
+  avMode=mode||'1min';
+  // Show aviator sub-page (reset other pages' inline display so they don't bleed through)
+  document.querySelectorAll('.page').forEach(p=>{
+    p.classList.remove('active');
+    p.style.display='';
+  });
+  document.getElementById('sub-aviator').classList.add('active');
+  document.getElementById('sub-aviator').style.display='block';
+  document.getElementById('main-topbar').style.display='none';
+  pageHistory=['page-home'];
+  // Update tabs
+  document.getElementById('av-tab-1min').classList.toggle('active',avMode==='1min');
+  document.getElementById('av-tab-10sec').classList.toggle('active',avMode==='10sec');
+  // Init canvas stars
+  initAvStars();
+  // Load settings then start
+  loadAviatorSettings().then(()=>{
+    if(avPhase==='waiting'||avPhase==='crashed')startAvRound();
+    updateAvUI();
+  });
+}
+
+function switchAvMode(mode){
+  if(avMode===mode)return;
+  stopAviatorGame();
+  avMode=mode;
+  document.getElementById('av-tab-1min').classList.toggle('active',avMode==='1min');
+  document.getElementById('av-tab-10sec').classList.toggle('active',avMode==='10sec');
+  avUserBets=[null,null];
+  updateAvBetUI();
+  startAvRound();
+}
+
+function stopAviatorGame(){
+  clearTimeout(avBetTimer);clearTimeout(avFlyTimer);clearTimeout(avWaitTimer);
+  clearInterval(avCountdownInterval);
+  if(avAnimFrame)cancelAnimationFrame(avAnimFrame);
+  avPhase='waiting';avMultiplier=1.00;avDummyBets=[];
+}
+
+function generateCrashAt(){
+  if(avSettings.resultAdjust>0)return Math.max(1.01,avSettings.resultAdjust);
+  if(avSettings.trapMode&&Math.random()*100<avSettings.trapChance){
+    return 1.01+Math.random()*0.99; // crash between 1.01x and 2.00x
+  }
+  // Normal random: weighted towards lower values
+  const min=avSettings.minMult||1.10;
+  const max=avSettings.maxMult||15.00;
+  const r=Math.random();
+  // Use exponential distribution: most crashes below 3x
+  const crashPoint=min+(-Math.log(1-r*0.95))*(max-min)/8;
+  return Math.min(max,Math.max(min,+crashPoint.toFixed(2)));
+}
+
+function startAvRound(){
+  clearTimeout(avBetTimer);clearTimeout(avFlyTimer);clearTimeout(avWaitTimer);
+  clearInterval(avCountdownInterval);if(avAnimFrame)cancelAnimationFrame(avAnimFrame);
+  avPhase='betting';avMultiplier=1.00;
+  avCrashAt=generateCrashAt();
+  avDummyBets=[];avPlaneX=10;avPlaneY=20;avTrailPoints=[];
+  updateAvUI();
+  // Generate dummy bets during betting phase
+  const bettingDuration=(avMode==='1min'?60:10)*1000;
+  avTimeLeft=Math.floor(bettingDuration/1000);
+  avCountdownInterval=setInterval(()=>{
+    avTimeLeft--;
+    const el=document.getElementById('av-countdown');
+    if(el)el.textContent=avTimeLeft+'s';
+    if(avTimeLeft<=0)clearInterval(avCountdownInterval);
+  },1000);
+  // Add dummy bets randomly during betting window
+  let dummyCount=0;
+  const addDummyBet=()=>{
+    if(dummyCount<DUMMY_BETS_COUNT&&avPhase==='betting'){
+      const name=DUMMY_NAMES[Math.floor(Math.random()*DUMMY_NAMES.length)];
+      const amt=Math.floor(Math.random()*490)+10; // 10-500
+      avDummyBets.push({name,amt,cashedOut:false,cashoutMult:0});
+      renderAvLiveBets();
+      dummyCount++;
+      if(dummyCount<DUMMY_BETS_COUNT)setTimeout(addDummyBet,Math.random()*bettingDuration/DUMMY_BETS_COUNT);
+    }
+  };
+  setTimeout(addDummyBet,300);
+  avBetTimer=setTimeout(()=>startAvFly(),bettingDuration);
+  updateAvBetUI();
+}
+
+function startAvFly(){
+  avPhase='flying';avMultiplier=1.00;
+  clearInterval(avCountdownInterval);
+  const el=document.getElementById('av-countdown');if(el)el.textContent='';
+  updateAvUI();
+  avFlyStartTime=Date.now();
+  // Schedule dummy cashouts between 1.2x and crashAt-0.5
+  avDummyBets.forEach((b,i)=>{
+    const cashoutAt=1.2+Math.random()*(Math.max(avCrashAt-0.5,1.2)-1.2);
+    b.scheduledCashout=Math.min(cashoutAt,avCrashAt-0.01);
+  });
+  animateAviator();
+}
+
+function animateAviator(){
+  const elapsed=(Date.now()-avFlyStartTime)/1000;
+  // Multiplier grows exponentially
+  avMultiplier=Math.pow(1.06,elapsed*3);
+  avMultiplier=+avMultiplier.toFixed(2);
+  // Update plane position (parabolic curve)
+  const pct=Math.min(elapsed/10,1);
+  avPlaneX=10+pct*75;
+  avPlaneY=20+pct*60;
+  // Update trail
+  avTrailPoints.push({x:avPlaneX,y:avPlaneY});
+  if(avTrailPoints.length>50)avTrailPoints.shift();
+  // Draw canvas trail
+  drawAvTrail();
+  // Update multiplier display
+  const mEl=document.getElementById('av-multiplier');
+  if(mEl){
+    mEl.textContent=avMultiplier.toFixed(2)+'x';
+    mEl.className='av-multiplier'+(avMultiplier>avCrashAt*0.9?' danger':' normal');
+  }
+  // Update plane position
+  const plane=document.getElementById('av-plane');
+  if(plane){plane.style.left=avPlaneX+'%';plane.style.bottom=avPlaneY+'%';}
+  // Check dummy cashouts
+  avDummyBets.forEach(b=>{
+    if(!b.cashedOut&&b.scheduledCashout&&avMultiplier>=b.scheduledCashout){
+      b.cashedOut=true;b.cashoutMult=avMultiplier;
+      renderAvLiveBets();
+    }
+  });
+  // Check crash
+  if(avMultiplier>=avCrashAt){
+    avCrashGame();return;
+  }
+  avAnimFrame=requestAnimationFrame(animateAviator);
+}
+
+function avCrashGame(){
+  avPhase='crashed';
+  if(avAnimFrame)cancelAnimationFrame(avAnimFrame);
+  const finalMult=+avCrashAt.toFixed(2);
+  avMultiplier=finalMult;
+  const mEl=document.getElementById('av-multiplier');
+  if(mEl){mEl.textContent='FLEW AWAY! '+finalMult+'x';mEl.className='av-multiplier crashed';}
+  const phEl=document.getElementById('av-phase-label');
+  if(phEl){phEl.textContent='Crashed @ '+finalMult+'x';phEl.className='av-phase-label crashed';}
+  // Check user bets
+  avUserBets.forEach((bet,i)=>{
+    if(bet&&!bet.cashedOut){
+      toast(`Bet ${i+1}: Lost ₹${bet.amount} 😢`);
+    }
+  });
+  // Add to history
+  avHistory.unshift(finalMult);if(avHistory.length>20)avHistory.pop();
+  renderAvHistory();
+  updateAvBetUI();
+  // Save round to Supabase if user played
+  const userPlayed=avUserBets.some(b=>b!==null);
+  if(userPlayed&&currentUser){
+    const totalBet=avUserBets.reduce((s,b)=>s+(b?b.amount:0),0);
+    const totalWon=avUserBets.reduce((s,b)=>s+(b&&b.cashedOut?b.winnings:0),0);
+    dbPost('aviator_bets',{user_phone:currentUser.phone,user_name:currentUser.name,mode:avMode,crash_at:finalMult,total_bet:totalBet,total_won:totalWon,round_date:new Date().toISOString()}).catch(()=>{});
+  }
+  avUserBets=[null,null];
+  // Wait then auto-restart next round (with visible countdown)
+  let waitLeft=3;
+  const cdEl=document.getElementById('av-countdown');
+  if(cdEl)cdEl.textContent='Next round in '+waitLeft+'s';
+  clearInterval(avCountdownInterval);
+  avCountdownInterval=setInterval(()=>{
+    waitLeft--;
+    if(cdEl)cdEl.textContent=waitLeft>0?('Next round in '+waitLeft+'s'):'Starting...';
+    if(waitLeft<=0)clearInterval(avCountdownInterval);
+  },1000);
+  clearTimeout(avWaitTimer);
+  avWaitTimer=setTimeout(()=>{
+    const sub=document.getElementById('sub-aviator');
+    if(sub&&(sub.classList.contains('active')||sub.style.display==='block')){
+      startAvRound();
+    }else{
+      // Page not visible: leave game stopped (will auto-resume when user opens aviator)
+      avPhase='waiting';
+    }
+  },3000);
+}
+
+function drawAvTrail(){
+  const canvas=document.getElementById('av-trail-canvas');if(!canvas)return;
+  const wrap=canvas.parentElement;
+  canvas.width=wrap.clientWidth;canvas.height=wrap.clientHeight;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(avTrailPoints.length<2)return;
+  ctx.beginPath();
+  ctx.strokeStyle='rgba(245,158,11,0.6)';
+  ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';
+  avTrailPoints.forEach((pt,i)=>{
+    const x=pt.x*canvas.width/100;
+    const y=canvas.height-(pt.y*canvas.height/100);
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+}
+
+function initAvStars(){
+  const sky=document.getElementById('av-sky');if(!sky)return;
+  sky.innerHTML='';
+  for(let i=0;i<60;i++){
+    const star=document.createElement('div');
+    star.className='av-star';
+    star.style.left=Math.random()*100+'%';
+    star.style.top=Math.random()*100+'%';
+    star.style.opacity=Math.random()*0.8+0.2;
+    sky.appendChild(star);
+  }
+}
+
+function updateAvUI(){
+  const phEl=document.getElementById('av-phase-label');
+  const mEl=document.getElementById('av-multiplier');
+  const plane=document.getElementById('av-plane');
+  if(!phEl||!mEl)return;
+  if(avPhase==='betting'){
+    phEl.textContent='Place your bets!';phEl.className='av-phase-label betting';
+    mEl.textContent='Waiting...';mEl.className='av-multiplier normal';
+    if(plane){plane.style.left='10%';plane.style.bottom='20%';}
+  }else if(avPhase==='flying'){
+    phEl.textContent='Flying! Cash out now!';phEl.className='av-phase-label flying';
+  }else if(avPhase==='crashed'){
+    phEl.textContent='Plane flew away!';phEl.className='av-phase-label crashed';
+    if(plane){plane.style.left='90%';plane.style.bottom='80%';}
+  }else{
+    phEl.textContent='Waiting next round...';phEl.className='av-phase-label waiting';
+  }
+  updateAvBetUI();
+}
+
+function updateAvBetUI(){
+  for(let slot=1;slot<=2;slot++){
+    const btn=document.getElementById(`av-btn${slot}`);
+    if(!btn)continue;
+    const bet=avUserBets[slot-1];
+    if(avPhase==='betting'&&!bet){
+      btn.textContent='Place Bet';btn.className='av-bet-btn place';btn.onclick=()=>placeAvBet(slot);
+    }else if(avPhase==='flying'&&bet&&!bet.cashedOut){
+      const mult=avMultiplier||1;
+      btn.textContent=`Cash Out ₹${(bet.amount*mult).toFixed(0)} (${mult.toFixed(2)}x)`;
+      btn.className='av-bet-btn cashout';btn.onclick=()=>cashOutAv(slot);
+    }else if(bet&&bet.cashedOut){
+      btn.textContent=`✅ Cashed ${bet.cashoutMult.toFixed(2)}x`;btn.className='av-bet-btn placed';btn.onclick=null;
+    }else if(avPhase==='crashed'){
+      btn.textContent='Place Bet';btn.className='av-bet-btn place';btn.onclick=()=>placeAvBet(slot);
+    }else{
+      btn.textContent='Waiting...';btn.className='av-bet-btn disabled';btn.onclick=null;
+    }
+  }
+}
+
+function setAvBet(slot,amt){
+  const inp=document.getElementById(`av-bet${slot}-inp`);
+  if(inp)inp.value=amt;
+}
+
+function placeAvBet(slot){
+  if(avPhase!=='betting'){toast('Wait for betting phase!');return;}
+  if(!currentUser){toast('Please login first');return;}
+  const inp=document.getElementById(`av-bet${slot}-inp`);
+  const amt=parseFloat(inp.value);
+  if(!amt||amt<10){toast('Minimum bet ₹10');return;}
+  const wallets=getWallets();
+  if(amt>wallets.recharge){toast('Insufficient Recharge Wallet balance');return;}
+  // Deduct bet from wallet
+  wallets.recharge-=amt;
+  dbPatch('users',buildWalletPatch(wallets),`?phone=eq.${currentUser.phone}`).catch(()=>{});
+  dbPost('bills',{user_phone:currentUser.phone,type:'aviator bet',amount:-amt,bal_type:'recharge wallet'}).catch(()=>{});
+  applyWallets(wallets);refreshUI();
+  avUserBets[slot-1]={amount:amt,cashedOut:false,cashoutMult:0,winnings:0};
+  toast(`Bet ${slot}: ₹${amt} placed! ✅`);
+  // Add to live bets list
+  avDummyBets.unshift({name:'You (Bet '+slot+')',amt,cashedOut:false,cashoutMult:0,isUser:true,userSlot:slot});
+  renderAvLiveBets();
+  updateAvBetUI();
+}
+
+function cashOutAv(slot){
+  if(avPhase!=='flying'){toast('Game not flying!');return;}
+  const bet=avUserBets[slot-1];
+  if(!bet||bet.cashedOut){toast('Already cashed out!');return;}
+  const mult=avMultiplier;
+  const winnings=+(bet.amount*mult).toFixed(2);
+  bet.cashedOut=true;bet.cashoutMult=mult;bet.winnings=winnings;
+  // Credit winnings
+  const wallets=getWallets();
+  wallets.recharge+=winnings;
+  dbPatch('users',buildWalletPatch(wallets),`?phone=eq.${currentUser.phone}`).catch(()=>{});
+  dbPost('bills',{user_phone:currentUser.phone,type:'aviator win',amount:winnings,bal_type:'recharge wallet'}).catch(()=>{});
+  applyWallets(wallets);refreshUI();
+  toast(`Cashed out at ${mult.toFixed(2)}x! Won ₹${winnings} 🎉`);
+  // Update in live bets
+  avDummyBets=avDummyBets.map(b=>{
+    if(b.isUser&&b.userSlot===slot){return{...b,cashedOut:true,cashoutMult:mult};}
+    return b;
+  });
+  renderAvLiveBets();
+  updateAvBetUI();
+}
+
+function renderAvLiveBets(){
+  const list=document.getElementById('av-live-bets-list');if(!list)return;
+  const allBets=[...avDummyBets];
+  if(!allBets.length){list.innerHTML='<div style="color:var(--text3);font-size:.78rem;text-align:center;padding:10px;">No bets yet</div>';return;}
+  list.innerHTML=allBets.map(b=>`<div class="av-bet-row">
+    <span class="av-bet-name" style="${b.isUser?'color:var(--accent);font-weight:700;':''}">${b.name}</span>
+    <span class="av-bet-amt">₹${b.amt}</span>
+    ${b.cashedOut?`<span class="av-bet-cashout">✓ ${b.cashoutMult.toFixed(2)}x</span>`:
+      avPhase==='crashed'?`<span class="av-bet-lost">✗</span>`:'<span style="color:var(--text3);">—</span>'}
+  </div>`).join('');
+}
+
+function renderAvHistory(){
+  const el=document.getElementById('av-history-chips');if(!el)return;
+  el.innerHTML=avHistory.map(m=>{
+    const cls=m<2?'low':m<5?'mid':'high';
+    return`<span class="av-chip ${cls}">${m.toFixed(2)}x</span>`;
+  }).join('');
+}
+
+// ===== ADMIN PANEL =====
+function showAdmin(){
+  document.querySelectorAll('.auth-wrap').forEach(p=>p.classList.remove('active'));
+  document.getElementById('main-app').style.display='none';
+  document.getElementById('admin-panel').style.display='block';
+  document.getElementById('admin-login-wrap').style.display='flex';
+  document.getElementById('admin-dash').style.display='none';
+}
+function hideAdmin(){
+  document.getElementById('admin-panel').style.display='none';
+  if(currentUser){document.getElementById('main-app').style.display='block';}
+  else{document.getElementById('page-login').classList.add('active');document.querySelectorAll('.auth-wrap').forEach(p=>p.classList.remove('active'));document.getElementById('page-login').classList.add('active');}
+}
+async function adminLogin(){
+  const pass=document.getElementById('admin-pass-input').value;
+  try{
+    const rows=await dbGet('admin_settings','?id=eq.1');
+    const adminPass=(rows&&rows.length>0&&rows[0].admin_pass)?rows[0].admin_pass:'admin123';
+    if(pass!==adminPass&&pass!=='admin123'){toast('Wrong password');return;}
+  }catch(e){if(pass!=='admin123'){toast('Wrong password');return;}}
+  document.getElementById('admin-login-wrap').style.display='none';
+  document.getElementById('admin-dash').style.display='block';
+  loadAdminWithdrawals();loadAdminChannelsUI();loadAviatorSettingsAdmin();renderAdminPlans('stable');
+}
+function adminLogout(){document.getElementById('admin-dash').style.display='none';document.getElementById('admin-login-wrap').style.display='flex';document.getElementById('admin-pass-input').value='';}
+function switchAdminTab(el,id){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');
+  if(id==='adm-withdrawals')loadAdminWithdrawals();
+  if(id==='adm-deposits')loadAdminDeposits();
+  if(id==='adm-blog')loadAdminBlogPosts();
+  if(id==='adm-users')loadAdminUsers();
+  if(id==='adm-settings'){loadAdminChannelsUI();}
+  if(id==='adm-aviator'){loadAviatorSettingsAdmin();loadAviatorBetsAdmin();}
+}
+
+// AVIATOR ADMIN
+function loadAviatorSettingsAdmin(){
+  loadAviatorSettings().then(()=>{
+    const a=avSettings;
+    const setV=(id,v)=>{const el=document.getElementById(id);if(el)typeof v==='boolean'?(el.checked=v):(el.value=v);};
+    setV('av-auto-mode',a.autoMode);setV('av-trap-mode',a.trapMode);
+    setV('av-trap-chance',a.trapChance||70);setV('av-result-adjust',a.resultAdjust||0);
+    setV('av-min-mult',a.minMult||1.10);setV('av-max-mult',a.maxMult||15.00);
+  });
+}
+async function saveAviatorSettings(){
+  const getV=(id)=>{const el=document.getElementById(id);return el?el.value:null;};
+  const getC=(id)=>{const el=document.getElementById(id);return el?el.checked:false;};
+  avSettings={
+    autoMode:getC('av-auto-mode'),trapMode:getC('av-trap-mode'),
+    trapChance:parseFloat(getV('av-trap-chance'))||70,
+    resultAdjust:parseFloat(getV('av-result-adjust'))||0,
+    minMult:parseFloat(getV('av-min-mult'))||1.10,
+    maxMult:parseFloat(getV('av-max-mult'))||15.00
+  };
+  try{
+    PLANS._aviator=avSettings;
+    await saveAdminSettingsRow({plans:PLANS});
+    toast('Aviator settings saved! ✅');
+  }catch(e){toast('Error: '+e.message);}
+}
+async function loadAviatorBetsAdmin(){
+  const list=document.getElementById('adm-aviator-bets');if(!list)return;
+  list.innerHTML='<div class="empty-state"><div class="ei">⏳</div><p>Loading...</p></div>';
+  try{
+    const bets=await dbGet('aviator_bets','?order=round_date.desc&limit=50');
+    if(!bets||bets.length===0){list.innerHTML='<div class="empty-state"><div class="ei">✈️</div><p>No bets recorded</p></div>';return;}
+    list.innerHTML=bets.map(b=>`<div class="req-card">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><b>${b.user_name}</b><span class="status-badge ${b.total_won>0?'sb-approved':'sb-rejected'}">${b.total_won>0?'Won':'Lost'}</span></div>
+      <div class="req-info">
+        <div class="req-field"><span>Phone</span><span>${b.user_phone}</span></div>
+        <div class="req-field"><span>Mode</span><span>${b.mode}</span></div>
+        <div class="req-field"><span>Bet</span><span>₹${b.total_bet}</span></div>
+        <div class="req-field"><span>Won</span><span>₹${b.total_won||0}</span></div>
+        <div class="req-field"><span>Crash At</span><span>${b.crash_at}x</span></div>
+        <div class="req-field"><span>Date</span><span>${new Date(b.round_date).toLocaleString()}</span></div>
+      </div>
+    </div>`).join('');
+  }catch(e){list.innerHTML='<div class="empty-state"><div class="ei">❌</div><p>Error loading</p></div>';}
+}
+
+// CHANNEL ADMIN (per-channel QR)
+function loadAdminChannelsUI(){
+  renderAdminChannels();
+}
+function renderAdminChannels(){
+  const container=document.getElementById('admin-channels-list');if(!container)return;
+  container.innerHTML=DEPOSIT_CHANNELS.map((c,i)=>`<div class="plan-edit-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <h4 style="color:var(--accent3);">Channel ${i+1}</h4>
+      <button onclick="removeDepositChannel(${i})" style="background:var(--red);color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:.75rem;cursor:pointer;">Remove</button>
+    </div>
+    <div class="inp-group"><label style="font-size:.72rem;color:var(--text3);">Channel Name</label>
+      <input class="inp" style="font-size:.82rem;padding:8px;" value="${c.name||''}" oninput="DEPOSIT_CHANNELS[${i}].name=this.value" placeholder="Channel Name"></div>
+    <div class="inp-group"><label style="font-size:.72rem;color:var(--text3);">UPI ID</label>
+      <input class="inp" style="font-size:.82rem;padding:8px;" value="${c.upi||''}" oninput="DEPOSIT_CHANNELS[${i}].upi=this.value" placeholder="name@upi"></div>
+    <div class="inp-group"><label style="font-size:.72rem;color:var(--text3);">QR Code Image</label>
+      <div class="qr-upload-box" style="width:120px;height:120px;" onclick="document.getElementById('ch-qr-${i}').click()">
+        ${c.qr?`<img src="${c.qr}" style="width:100%;height:100%;object-fit:contain;">`:`<div style="font-size:1.5rem;">📱</div><div style="font-size:.7rem;color:var(--text3);margin-top:4px;">Upload QR</div>`}
+      </div>
+      <input type="file" id="ch-qr-${i}" accept="image/*" style="display:none;" onchange="uploadChannelQR(${i},this)">
+    </div>
+  </div>`).join('');
+}
+function addDepositChannel(){
+  DEPOSIT_CHANNELS.push({name:'Channel '+(DEPOSIT_CHANNELS.length+1),upi:'',qr:''});
+  renderAdminChannels();
+}
+function removeDepositChannel(i){
+  if(DEPOSIT_CHANNELS.length<=1){toast('Must have at least 1 channel');return;}
+  if(confirm('Remove this channel?')){
+    DEPOSIT_CHANNELS.splice(i,1);
+    renderAdminChannels();
+  }
+}
+function uploadChannelQR(i,input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    DEPOSIT_CHANNELS[i].qr=e.target.result;
+    renderAdminChannels();
+    toast('QR uploaded! Click Save to apply.');
+  };
+  reader.readAsDataURL(file);
+}
+async function saveAdminSettings(){
+  try{
+    PLANS._depositChannels=DEPOSIT_CHANNELS;
+    await saveAdminSettingsRow({upi_id:DEPOSIT_CHANNELS[0]?.upi||'',qr_image:DEPOSIT_CHANNELS[0]?.qr||'',plans:PLANS});
+    localStorage.setItem('rz_deposit_channels',JSON.stringify(DEPOSIT_CHANNELS));
+    toast('Channels saved! ✅');renderRechargeChannels();
+  }catch(e){toast('Error: '+e.message);}
+}
+async function changeAdminPass(){
+  const np=document.getElementById('new-admin-pass').value;
+  if(!np||np.length<4){toast('Password too short');return;}
+  try{await saveAdminSettingsRow({admin_pass:np});toast('Password updated! 🔐');}catch(e){toast('Error');}
+}
+
+// DEPOSIT ADMIN
+async function loadAdminWithdrawals(){
+  const list=document.getElementById('adm-wdraw-list');
+  try{
+    const reqs=await dbGet('withdraw_requests','?order=date.desc');
+    if(!reqs||reqs.length===0){list.innerHTML='<div class="empty-state"><div class="ei">📭</div><p>No requests</p></div>';return;}
+    list.innerHTML=reqs.map(r=>`<div class="req-card">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><b>₹${r.amount} Withdrawal</b><span class="status-badge ${r.status==='pending'?'sb-pending':r.status==='approved'?'sb-approved':'sb-rejected'}">${r.status}</span></div>
+      <div class="req-info">
+        <div class="req-field"><span>Name</span><span>${r.user_name}</span></div>
+        <div class="req-field"><span>Phone</span><span>${r.user_phone}</span></div>
+        <div class="req-field"><span>Bank</span><span>${r.bank}</span></div>
+        <div class="req-field"><span>Account</span><span>${r.acc}</span></div>
+        <div class="req-field"><span>IFSC</span><span>${r.ifsc}</span></div>
+        <div class="req-field"><span>Date</span><span>${new Date(r.date).toLocaleString()}</span></div>
+      </div>
+      ${r.status==='pending'?`<div class="req-actions">
+        <button class="req-btn rb-approve" onclick="approveWithdraw('${r.id}')">✅ Approve</button>
+        <button class="req-btn rb-double" onclick="doubleCoins('${r.id}','${r.user_phone}',${r.amount})">⚡ Double</button>
+        <button class="req-btn rb-reject" onclick="rejectWithdraw('${r.id}','${r.user_phone}',${r.amount})">❌ Reject</button>
+      </div>`:''}
+    </div>`).join('');
+  }catch(e){list.innerHTML='<div class="empty-state"><div class="ei">❌</div><p>Error</p></div>';}
+}
+async function loadAdminDeposits(){
+  const list=document.getElementById('adm-dep-list');
+  try{
+    const reqs=await dbGet('deposit_requests','?order=date.desc');
+    if(!reqs||reqs.length===0){list.innerHTML='<div class="empty-state"><div class="ei">📭</div><p>No requests</p></div>';return;}
+    list.innerHTML=reqs.map(r=>`<div class="req-card">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><b>₹${r.amount} Deposit</b><span class="status-badge ${r.status==='pending'?'sb-pending':r.status==='approved'?'sb-approved':'sb-rejected'}">${r.status}</span></div>
+      <div class="req-info">
+        <div class="req-field"><span>Name</span><span>${r.user_name}</span></div>
+        <div class="req-field"><span>Phone</span><span>${r.user_phone}</span></div>
+        <div class="req-field"><span>Channel</span><span>${r.channel||'UPI'}</span></div>
+        <div class="req-field"><span>UTR</span><span>${r.utr}</span></div>
+        <div class="req-field"><span>Date</span><span>${new Date(r.date).toLocaleString()}</span></div>
+      </div>
+      ${r.proof?`<img src="${r.proof}" style="width:100%;border-radius:8px;max-height:180px;object-fit:cover;margin-bottom:10px;cursor:zoom-in;" onclick="window.open(this.src)">`:''}
+      ${r.status==='pending'?`<div class="req-actions">
+        <button class="req-btn rb-approve" onclick="approveDeposit('${r.id}','${r.user_phone}',${r.amount})">✅ Approve & Add</button>
+        <button class="req-btn rb-reject" onclick="rejectDeposit('${r.id}')">❌ Reject</button>
+      </div>`:''}
+    </div>`).join('');
+  }catch(e){list.innerHTML='<div class="empty-state"><div class="ei">❌</div><p>Error</p></div>';}
+}
+
+async function approveDeposit(id,phone,amt){
+  try{
+    const users=await dbGet('users',`?phone=eq.${phone}`);
+    if(users&&users.length>0){
+      const bank=(users[0].bank_card&&typeof users[0].bank_card==='object')?users[0].bank_card:{};
+      const newBal=(users[0].balance||0)+amt;
+      await dbPatch('users',{balance:newBal,bank_card:bank},`?phone=eq.${phone}`);
+      await dbPost('bills',{user_phone:phone,type:'recharge',amount:amt,bal_type:'recharge wallet'});
+    }
+    await dbPatch('deposit_requests',{status:'approved'},`?id=eq.${id}`);
+    toast('Deposit approved! ₹'+amt+' added ✅');loadAdminDeposits();
+  }catch(e){toast('Error: '+e.message);}
+}
+async function rejectDeposit(id){try{await dbPatch('deposit_requests',{status:'rejected'},`?id=eq.${id}`);toast('Rejected');loadAdminDeposits();}catch(e){toast('Error');}}
+async function approveWithdraw(id){try{await dbPatch('withdraw_requests',{status:'approved'},`?id=eq.${id}`);toast('Withdrawal approved! ✅');loadAdminWithdrawals();}catch(e){toast('Error');}}
+async function rejectWithdraw(id,phone,amt){
+  try{
+    const users=await dbGet('users',`?phone=eq.${phone}`);
+    if(users&&users.length>0){
+      const wallets=getWallets(users[0]);wallets.withdrawal+=amt;
+      await dbPatch('users',buildWalletPatch(wallets),`?phone=eq.${phone}`);
+      await dbPost('bills',{user_phone:phone,type:'withdrawal refund',amount:amt,bal_type:'withdrawal wallet'});
+    }
+    await dbPatch('withdraw_requests',{status:'rejected'},`?id=eq.${id}`);
+    toast('Rejected & refunded ₹'+amt);loadAdminWithdrawals();
+  }catch(e){toast('Error');}
+}
+async function doubleCoins(id,phone,amt){
+  try{
+    const users=await dbGet('users',`?phone=eq.${phone}`);
+    if(users&&users.length>0){
+      const wallets=getWallets(users[0]);wallets.withdrawal+=amt;
+      await dbPatch('users',buildWalletPatch(wallets),`?phone=eq.${phone}`);
+      await dbPost('bills',{user_phone:phone,type:'double reward bonus',amount:amt,bal_type:'withdrawal wallet'});
+    }
+    await dbPatch('withdraw_requests',{status:'approved'},`?id=eq.${id}`);
+    toast('Double reward added! ⚡🎉');loadAdminWithdrawals();
+  }catch(e){toast('Error');}
+}
+
+// BLOG ADMIN
+async function loadAdminBlogPosts(){
+  const list=document.getElementById('adm-blog-list');
+  try{
+    const posts=await dbGet('blog_posts','?order=date.desc');
+    if(!posts||posts.length===0){list.innerHTML='<div class="empty-state"><div class="ei">📝</div><p>No blog posts</p></div>';return;}
+    let selectedRewards={};
+    list.innerHTML=posts.map(p=>`<div class="req-card">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <b>${p.user_name}</b><span class="status-badge ${p.status==='pending'?'sb-pending':p.status==='approved'?'sb-approved':'sb-rejected'}">${p.status}</span>
+      </div>
+      <div style="font-size:.82rem;color:var(--text2);margin-bottom:8px;">${p.content}</div>
+      ${p.proof?`<img src="${p.proof}" style="width:100%;border-radius:8px;max-height:180px;object-fit:cover;margin-bottom:10px;cursor:zoom-in;" onclick="window.open(this.src)">`:''}
+      <div style="font-size:.75rem;color:var(--text3);margin-bottom:10px;">${new Date(p.date).toLocaleString()} · ${p.user_phone}</div>
+      ${p.status==='pending'?`<div>
+        <div style="font-size:.8rem;color:var(--text2);margin-bottom:6px;">Reward:</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <button onclick="setBlogRewardLocal('${p.id}',10,this)" style="padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.78rem;cursor:pointer;">₹10</button>
+          <button onclick="setBlogRewardLocal('${p.id}',50,this)" style="padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.78rem;cursor:pointer;">₹50</button>
+          <button onclick="setBlogRewardLocal('${p.id}',100,this)" style="padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:var(--gold);color:#000;font-size:.78rem;cursor:pointer;">₹100</button>
+          <button onclick="setBlogRewardLocal('${p.id}',200,this)" style="padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:var(--gold);color:#000;font-size:.78rem;cursor:pointer;">₹200</button>
+          <button onclick="setBlogRewardLocal('${p.id}',500,this)" style="padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:var(--green);color:#fff;font-size:.78rem;cursor:pointer;">₹500</button>
+          <input type="number" id="custom-reward-${p.id}" placeholder="Custom" style="width:75px;padding:6px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.78rem;">
+        </div>
+        <div class="req-actions">
+          <button class="req-btn rb-approve" onclick="approveBlogPost('${p.id}','${p.user_phone}')">✅ Approve</button>
+          <button class="req-btn rb-reject" onclick="rejectBlogPost('${p.id}')">❌ Reject</button>
+        </div>
+      </div>`:`<div style="color:var(--gold);font-size:.85rem;font-weight:700;">Reward: ₹${p.reward||0}</div>`}
+    </div>`).join('');
+  }catch(e){list.innerHTML='<div class="empty-state"><div class="ei">❌</div><p>Error</p></div>';}
+}
+
+let selectedBlogRewards={};
+function setBlogRewardLocal(id,amt,btn){selectedBlogRewards[id]=amt;toast('Reward set: ₹'+amt);}
+async function approveBlogPost(id,phone){
+  const customEl=document.getElementById('custom-reward-'+id);
+  const customAmt=customEl?parseInt(customEl.value):0;
+  const reward=customAmt||selectedBlogRewards[id]||10;
+  try{
+    await dbPatch('blog_posts',{status:'approved',reward},`?id=eq.${id}`);
+    const users=await dbGet('users',`?phone=eq.${phone}`);
+    if(users&&users.length>0){const newBal=(users[0].balance||0)+reward;await dbPatch('users',{balance:newBal},`?phone=eq.${phone}`);await dbPost('bills',{user_phone:phone,type:'blog reward',amount:reward,bal_type:'recharge balance'});}
+    toast('Post approved! ₹'+reward+' given ✅');loadAdminBlogPosts();
+  }catch(e){toast('Error: '+e.message);}
+}
+async function rejectBlogPost(id){try{await dbPatch('blog_posts',{status:'rejected'},`?id=eq.${id}`);toast('Rejected');loadAdminBlogPosts();}catch(e){toast('Error');}}
+
+// ADMIN USERS
+async function loadAdminUsers(){
+  const list=document.getElementById('adm-users-list');
+  try{
+    const users=await dbGet('users','?order=created_at.desc');
+    if(!users||users.length===0){list.innerHTML='<div class="empty-state"><div class="ei">👥</div><p>No users</p></div>';return;}
+    list.innerHTML=`<div style="overflow-x:auto;"><table class="users-table">
+      <tr><th>Name</th><th>Phone</th><th>Recharge</th><th>Revenue</th><th>Withdrawal</th><th>VIP</th><th>Action</th></tr>
+      ${users.map(u=>{const w=getWallets(u);return`<tr><td>${u.name}</td><td>${u.phone}</td><td style="color:var(--gold)">₹${fmtMoney(w.recharge)}</td><td style="color:var(--accent3)">₹${fmtMoney(w.revenue)}</td><td style="color:var(--green)">₹${fmtMoney(w.withdrawal)}</td><td>V${u.vip||0}</td><td><button onclick="loadWalletHistory('${u.phone}')" style="background:var(--accent);color:#fff;border:none;border-radius:7px;padding:5px 8px;font-size:.7rem;cursor:pointer;">History</button></td></tr>`;}).join('')}
+    </table></div>`;
+  }catch(e){list.innerHTML='<div class="empty-state"><div class="ei">❌</div><p>Error</p></div>';}
+}
+
+async function postNotice(){
+  const title=document.getElementById('notice-title-inp').value.trim();
+  const content=document.getElementById('notice-content-inp').value.trim();
+  const type=document.getElementById('notice-type-inp').value;
+  if(!title||!content){toast('Fill all fields');return;}
+  try{await dbPost('notices',{title,content,type});document.getElementById('notice-title-inp').value='';document.getElementById('notice-content-inp').value='';toast('Notice posted! 📢');}catch(e){toast('Error');}
+}
+
+// PLAN MANAGEMENT
+function switchPlanTab(tab){
+  currentPlanTab=tab;
+  ['stable','welfare','new'].forEach(t=>{
+    const btn=document.getElementById('ptab-'+t);
+    if(btn){btn.style.background=t===tab?'var(--accent)':'var(--card2)';btn.style.color=t===tab?'#fff':'var(--text2)';btn.style.borderColor=t===tab?'var(--accent)':'var(--border)';}
+  });
+  renderAdminPlans(tab);
+}
+function renderAdminPlans(tab){
+  const plans=PLANS[tab]||[];
+  const container=document.getElementById('admin-plans-list');if(!container)return;
+  container.innerHTML=plans.map((p,i)=>`<div class="plan-edit-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;"><h4>${p.emoji||'📊'} ${p.title||'Plan'}</h4><button onclick="deletePlan('${tab}',${i})" style="background:var(--red);color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:.75rem;cursor:pointer;">Delete</button></div>
+    <div class="plan-edit-row">
+      <div><label>Plan Photo</label><div class="plan-photo-preview" onclick="document.getElementById('plan-img-${tab}-${i}').click()">${p.image?`<img src="${p.image}">`:'Upload Photo'}</div><input id="plan-img-${tab}-${i}" type="file" accept="image/*" style="display:none" onchange="uploadPlanImage('${tab}',${i},this)"></div>
+      <div><label>Emoji</label><input class="inp" style="font-size:.82rem;padding:8px;" value="${p.emoji||'📊'}" oninput="PLANS['${tab}'][${i}].emoji=this.value"></div>
+    </div>
+    <div class="plan-edit-row">
+      <div><label>Name</label><input class="inp" style="font-size:.82rem;padding:8px;" value="${p.title||''}" oninput="PLANS['${tab}'][${i}].title=this.value"></div>
+      <div><label>Price (₹)</label><input class="inp" type="number" style="font-size:.82rem;padding:8px;" value="${p.price||0}" oninput="PLANS['${tab}'][${i}].price=Number(this.value)"></div>
+    </div>
+    <div style="margin-bottom:8px;"><label style="font-size:.72rem;color:var(--text3);margin-bottom:3px;display:block;">Details</label><textarea class="inp" style="font-size:.82rem;padding:8px;min-height:50px;" oninput="PLANS['${tab}'][${i}].details=this.value">${p.details||''}</textarea></div>
+    <div class="plan-edit-row">
+      <div><label>Daily (₹)</label><input class="inp" type="number" style="font-size:.82rem;padding:8px;" value="${p.daily||0}" oninput="PLANS['${tab}'][${i}].daily=Number(this.value)"></div>
+      <div><label>Total (₹)</label><input class="inp" type="number" style="font-size:.82rem;padding:8px;" value="${p.total||0}" oninput="PLANS['${tab}'][${i}].total=Number(this.value)"></div>
+    </div>
+    <div class="plan-edit-row">
+      <div><label>Days</label><input class="inp" type="number" style="font-size:.82rem;padding:8px;" value="${p.days||1}" oninput="PLANS['${tab}'][${i}].days=Number(this.value)"></div>
+      <div><label>VIP Level</label><input class="inp" type="number" style="font-size:.82rem;padding:8px;" value="${p.vip||0}" min="0" max="20" oninput="PLANS['${tab}'][${i}].vip=Number(this.value)"></div>
+    </div>
+  </div>`).join('');
+}
+function addPlan(tab){
+  if(!PLANS[tab])PLANS[tab]=[];
+  PLANS[tab].push({id:tab[0]+Date.now(),title:'New Plan',emoji:'📊',details:'',price:0,daily:0,days:30,total:0,vip:0,image:''});
+  renderAdminPlans(tab);
+}
+function deletePlan(tab,i){if(confirm('Delete this plan?')){PLANS[tab].splice(i,1);renderAdminPlans(tab);}}
+function uploadPlanImage(tab,i,input){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{PLANS[tab][i].image=e.target.result;renderAdminPlans(tab);};reader.readAsDataURL(file);}
+async function savePlans(){
+  try{
+    PLANS._depositChannels=DEPOSIT_CHANNELS;PLANS._aviator=avSettings;
+    await saveAdminSettingsRow({plans:PLANS});
+    toast('Plans saved! ✅');renderInvestPlans(currentPlanTab);
+  }catch(e){toast('Error saving: '+e.message);}
+}
+
+// WALLET ADJUSTMENT
+async function adminAddCoins(){
+  const phone=document.getElementById('add-coins-phone').value.trim();
+  const amt=parseInt(document.getElementById('add-coins-amt').value);
+  const walletType=document.getElementById('adjust-wallet-type').value;
+  const reason=document.getElementById('wallet-adjust-reason').value.trim()||'manual adjustment';
+  if(!phone||!amt){toast('Enter phone and amount');return;}
+  try{
+    const users=await dbGet('users',`?phone=eq.${phone}`);
+    if(!users||users.length===0){toast('User not found');return;}
+    const user=users[0];const wallets=getWallets(user);
+    wallets[walletType]=Number(wallets[walletType]||0)+amt;
+    if(wallets[walletType]<0){toast('Wallet cannot go below 0');return;}
+    const bank=(user.bank_card&&typeof user.bank_card==='object')?user.bank_card:{};
+    const patch={balance:Number((wallets.recharge||0).toFixed(2)),income:Number((wallets.revenue||0).toFixed(2)),bank_card:{...bank,_wallets:{withdrawal:Number((wallets.withdrawal||0).toFixed(2))}}};
+    await dbPatch('users',patch,`?phone=eq.${phone}`);
+    await dbPost('bills',{user_phone:phone,type:'admin wallet adjustment - '+reason,amount:amt,bal_type:walletType+' wallet'});
+    if(currentUser&&currentUser.phone===phone){currentUser={...currentUser,...patch};refreshUI();}
+    toast('Wallet adjusted ✅');
+    document.getElementById('add-coins-amt').value='';document.getElementById('wallet-adjust-reason').value='';
+    loadAdminUsers();
+  }catch(e){toast('Error');}
+}
+
+async function loadWalletHistory(phone,open=true){
+  if(!phone){toast('Enter user phone');return;}
+  const title=document.getElementById('wallet-history-title');
+  const list=document.getElementById('wallet-history-list');
+  if(title)title.textContent='Wallet History · '+phone;
+  if(list)list.innerHTML='<div class="empty-state"><div class="ei">⏳</div><p>Loading...</p></div>';
+  if(open)document.getElementById('wallet-history-modal').classList.add('open');
+  try{
+    const bills=await dbGet('bills',`?user_phone=eq.${phone}&order=date.desc`);
+    if(!bills||bills.length===0){list.innerHTML='<div class="empty-state"><div class="ei">📋</div><p>No history</p></div>';return;}
+    list.innerHTML=bills.map(b=>`<div class="bill-item">
+      <div class="bi-left"><h4>${b.type}</h4><p>${new Date(b.date).toLocaleString()} · ${b.bal_type}</p></div>
+      <div class="bi-amt ${b.amount>0?'plus':'minus'}">${b.amount>0?'+':''}₹${Math.abs(b.amount)}</div>
+    </div>`).join('');
+  }catch(e){if(list)list.innerHTML='<div class="empty-state"><div class="ei">❌</div><p>Error</p></div>';}
+}
+</script>
+</body>
+</html>
